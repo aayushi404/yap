@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id    Int     @id @default(autoincrement())
+  name  String
+  username  String    @unique
+  email   String    @unique
+  password    String
+  createdAt   DateTime    @default(now())   @map("created_at")
+  updatedAt   DateTime    @updatedAt  @map("updated_at")
+  profile   Profile?
+  posts   Post[]
+  comments    Comment[]
+  likes   Like[]
+  followers   Follow[]    @relation(name: "follower")
+  following   Follow[]    @relation(name: "following")
+  @@map("users")
+}
+
+model Profile {
+  id    Int   @id   @default(autoincrement())
+  name    String
+  bio   String?
+  profileImage    String    @map("profile_image")
+  updatedAt   DateTime     @updatedAt   @map("updated_at")
+  userId    Int   @map("user_id")   @unique
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@map("profiles")
+}
+
+model Post {
+  id    Int   @id @default(autoincrement())
+  text    String?
+  media   String[]
+  createdAt   DateTime    @default(now())   @map("created_at")
+  updatedAt    DateTime    @updatedAt   @map("updated_at")
+  comments    Comment[]
+  likes   Like[]
+  authorId    Int   @map("author_id")
+  author    User    @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  @@map("posts")
+  @@index([authorId, createdAt])
+}
+
+model Comment {
+  id    Int   @id @default(autoincrement())
+  text    String?
+  media   String[]
+  createdAt   DateTime    @default(now())   @map("created_at")
+  updatedAt    DateTime    @updatedAt   @map("updated_at")
+  postId    Int?    @map("post_id")
+  post    Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  commentId   Int?    @map("comment_id")
+  comment Comment? @relation(name: "CommentToComment", fields: [commentId], references: [id], onDelete: Cascade)
+  comments Comment[]    @relation(name: "CommentToComment")
+  authorId    Int   @map("author_id")
+  author    User    @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  @@map("comments")
+}
+
+model Like {
+  userId    Int
+  postId    Int
+  createdAt   DateTime    @default(now())   @map("created_at")
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post    Post    @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@id([userId, postId])
+  @@map("likes")
+}
+
+model Follow {
+  followerId    Int   @map("follower_id")
+  followingId   Int   @map("following_id")
+  createdAt   DateTime    @default(now())   @map("created_at")
+
+  follower   User    @relation(name: "follower",fields: [followerId], references: [id], onDelete: Cascade)
+  following   User    @relation(name: "following",fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@id([followerId, followingId])
+  @@map("follows")
+}

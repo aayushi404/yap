@@ -1,0 +1,16 @@
+import express from "express"
+import zodValidatorMiddlware from "../middlewares/validator.js"
+import { createPostSchema } from "../schema/validator.js"
+import authenticationMiddleware from "../middlewares/authentication.js"
+import { createPost, deletePost, updatePost, likePost, dislikePost } from "../controllers/post.js"
+import asyncHandler from "../utils/asyncHandler.js"
+
+const postRouter: express.Router = express.Router()
+
+postRouter.post("/", authenticationMiddleware, zodValidatorMiddlware(createPostSchema), asyncHandler(createPost))
+postRouter.patch("/:id", authenticationMiddleware, zodValidatorMiddlware(createPostSchema), asyncHandler(updatePost))
+postRouter.delete("/:id", authenticationMiddleware, asyncHandler(deletePost))
+postRouter.get("/like/:id", authenticationMiddleware, asyncHandler(likePost))
+postRouter.delete("like/:id", authenticationMiddleware, asyncHandler(dislikePost))
+
+export default postRouter
