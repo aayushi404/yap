@@ -4,7 +4,7 @@ import type { createPostInput } from "../schema/validator.js";
 import { AppError } from "../utils/appError.js";
 import { StatusCodes } from "http-status-codes";
 import prisma from "../utils/prismaCient.js";
-import { createsPost } from "../services/database.post.js";
+import { createsPost, getPostById } from "../services/database.post.js";
 
 const createPost = async (req: AuthRequest, res: Response) => {
     const reqBody : createPostInput = req.body
@@ -28,13 +28,12 @@ const updatePost = async (req: AuthRequest, res: Response) => {
     }
 
     const postId = Number(req.params.id as string )
-    const postExist = await prisma.post.findUnique({
-        where: {
-            id: postId
-        }
-    })
+    const postExist = await getPostById(postId)
     if (!postExist) {
         throw new AppError("Invalid Post id", StatusCodes.CONFLICT)
+    }
+    if (postExist.authorId !== req.user?.id) {
+        throw new AppError("Forbidden request", StatusCodes.FORBIDDEN)
     }
 
     let post : { text: string | null; media: string[]; createdAt: Date; updatedAt: Date; id: number; authorId: number; } | null = null
@@ -63,13 +62,20 @@ const updatePost = async (req: AuthRequest, res: Response) => {
 
 const deletePost = async (req: AuthRequest, res: Response) => {
     const postId = Number(req.params.id as string)
+    const post = await getPostById(postId)
+    if (!post) {
+        throw new AppError("Invalid post Id", StatusCodes.CONFLICT)
+    }
+    if (post.authorId !== req.user?.id!) {
+        throw new AppError("Forbidden request", StatusCodes.FORBIDDEN)
+    }
     await prisma.post.delete({
         where: {
             id: postId
         }
     })
     return res.status(StatusCodes.OK).json({
-        message: "Successfully deleted the content"
+        message: "Successfully deleted the post"
     })
 }
 
@@ -102,4 +108,27 @@ const dislikePost = async (req: AuthRequest, res: Response) => {
     })
 }
 
-export {createPost, updatePost, deletePost, likePost, dislikePost}
+const getPostWithComments = async (req: AuthRequest, res: Response) => {
+    const postId : number = Number(req.params.postId)
+    const post = await prisma.post.findFirst({
+        where: {
+            id: postId
+        },
+        include: {
+            comments: {
+                include: {
+                    comments: true
+                }
+            },
+            likes: true
+        }
+    })
+
+    if (!post) {
+        throw new AppError("Invalid post id", StatusCodes.BAD_REQUEST)
+    }
+
+    return res.status(StatusCodes.OK).json({post})
+}
+
+export {createPost, updatePost, deletePost, likePost, dislikePost, getPostWithComments}

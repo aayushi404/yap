@@ -29,8 +29,22 @@ const createPostSchema = z.object({
     media: z.array(z.string()).max(4, {message: "you can't upload more than 4 images"})
 })
 
+const createCommentSchema = z.object({
+    text: z.string()
+    .min(3, {message: "post should be atleast 3 characters long"})
+    .max(250, {message: "post should be less than 250 characters long"}).optional(),
+    media: z.array(z.string()).max(4, {message: "you can't upload more than 4 images"}),
+    postId: z.number().optional(),
+    commentId: z.number().optional()
+})
 
-export {loginSchema, signupSchema, createPostSchema}
+const createFollowSchema = z.object({
+    followingId: z.number()
+})
+
+export {loginSchema, signupSchema, createPostSchema, createCommentSchema, createFollowSchema}
 export type LoginInput = z.infer<typeof loginSchema>
 export type SignupInput = z.infer<typeof signupSchema>
 export type createPostInput = z.infer<typeof createPostSchema>
+export type createCommentInput = z.infer<typeof createCommentSchema>
+export type createFollowInput = z.infer<typeof createFollowSchema>
