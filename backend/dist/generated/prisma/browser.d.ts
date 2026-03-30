@@ -13,11 +13,6 @@ export type User = Prisma.UserModel;
  */
 export type Profile = Prisma.ProfileModel;
 /**
- * Model Content
- *
- */
-export type Content = Prisma.ContentModel;
-/**
  * Model Post
  *
  */
@@ -27,4 +22,14 @@ export type Post = Prisma.PostModel;
  *
  */
 export type Comment = Prisma.CommentModel;
+/**
+ * Model Like
+ *
+ */
+export type Like = Prisma.LikeModel;
+/**
+ * Model Follow
+ *
+ */
+export type Follow = Prisma.FollowModel;
 //# sourceMappingURL=browser.d.ts.map

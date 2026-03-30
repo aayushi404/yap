@@ -1,19 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, JetBrains_Mono } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { cn } from "@/lib/utils";
-import Provider from "./providers";
+import { Toaster } from "@/components/ui/sonner";
+import { AuthStoreProvider } from "@/contexts/auth";
 
-const jetbrainsMono = JetBrains_Mono({subsets:['latin'],variable:'--font-mono'});
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const fontSans = Geist({
   subsets: ["latin"],
+  variable: "--font-sans",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const fontSerif = Geist_Mono({
   subsets: ["latin"],
+  variable: "--font-serif",
 });
 
 export const metadata: Metadata = {
@@ -27,11 +25,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("font-mono", jetbrainsMono.variable)}>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Provider>{children}</Provider>
+    <html lang="en">
+      <body className={`${fontSans.variable} ${fontSerif.variable} antialiased`}>
+        <AuthStoreProvider>{children}</AuthStoreProvider>
+        <Toaster />
       </body>
     </html>
   );

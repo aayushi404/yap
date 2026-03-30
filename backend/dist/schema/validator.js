@@ -16,5 +16,22 @@ const signupSchema = z.object({
     password: passwordSchema,
     email: z.email(),
 });
-export { loginSchema, signupSchema };
+const createPostSchema = z.object({
+    text: z.string()
+        .min(3, { message: "post should be atleast 3 characters long" })
+        .max(250, { message: "post should be less than 250 characters long" }).optional(),
+    media: z.array(z.string()).max(4, { message: "you can't upload more than 4 images" })
+});
+const createCommentSchema = z.object({
+    text: z.string()
+        .min(3, { message: "post should be atleast 3 characters long" })
+        .max(250, { message: "post should be less than 250 characters long" }).optional(),
+    media: z.array(z.string()).max(4, { message: "you can't upload more than 4 images" }),
+    postId: z.number().optional(),
+    commentId: z.number().optional()
+});
+const createFollowSchema = z.object({
+    followingId: z.number()
+});
+export { loginSchema, signupSchema, createPostSchema, createCommentSchema, createFollowSchema };
 //# sourceMappingURL=validator.js.map

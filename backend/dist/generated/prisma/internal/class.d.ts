@@ -134,17 +134,6 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
         omit: OmitOpts;
     }>;
     /**
-     * `prisma.content`: Exposes CRUD operations for the **Content** model.
-      * Example usage:
-      * ```ts
-      * // Fetch zero or more Contents
-      * const contents = await prisma.content.findMany()
-      * ```
-      */
-    get content(): Prisma.ContentDelegate<ExtArgs, {
-        omit: OmitOpts;
-    }>;
-    /**
      * `prisma.post`: Exposes CRUD operations for the **Post** model.
       * Example usage:
       * ```ts
@@ -164,6 +153,28 @@ export interface PrismaClient<in LogOpts extends Prisma.LogLevel = never, in out
       * ```
       */
     get comment(): Prisma.CommentDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.like`: Exposes CRUD operations for the **Like** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Likes
+      * const likes = await prisma.like.findMany()
+      * ```
+      */
+    get like(): Prisma.LikeDelegate<ExtArgs, {
+        omit: OmitOpts;
+    }>;
+    /**
+     * `prisma.follow`: Exposes CRUD operations for the **Follow** model.
+      * Example usage:
+      * ```ts
+      * // Fetch zero or more Follows
+      * const follows = await prisma.follow.findMany()
+      * ```
+      */
+    get follow(): Prisma.FollowDelegate<ExtArgs, {
         omit: OmitOpts;
     }>;
 }

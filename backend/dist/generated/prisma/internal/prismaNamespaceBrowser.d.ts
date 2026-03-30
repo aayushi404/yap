@@ -28,9 +28,10 @@ export declare const AnyNull: import("@prisma/client/runtime/client").AnyNullCla
 export declare const ModelName: {
     readonly User: "User";
     readonly Profile: "Profile";
-    readonly Content: "Content";
     readonly Post: "Post";
     readonly Comment: "Comment";
+    readonly Like: "Like";
+    readonly Follow: "Follow";
 };
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
 export declare const TransactionIsolationLevel: {
@@ -59,30 +60,38 @@ export declare const ProfileScalarFieldEnum: {
     readonly userId: "userId";
 };
 export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeof ProfileScalarFieldEnum];
-export declare const ContentScalarFieldEnum: {
+export declare const PostScalarFieldEnum: {
     readonly id: "id";
     readonly text: "text";
     readonly media: "media";
-    readonly postId: "postId";
-    readonly commentId: "commentId";
-};
-export type ContentScalarFieldEnum = (typeof ContentScalarFieldEnum)[keyof typeof ContentScalarFieldEnum];
-export declare const PostScalarFieldEnum: {
-    readonly id: "id";
     readonly createdAt: "createdAt";
-    readonly updateAt: "updateAt";
+    readonly updatedAt: "updatedAt";
     readonly authorId: "authorId";
 };
 export type PostScalarFieldEnum = (typeof PostScalarFieldEnum)[keyof typeof PostScalarFieldEnum];
 export declare const CommentScalarFieldEnum: {
     readonly id: "id";
+    readonly text: "text";
+    readonly media: "media";
     readonly createdAt: "createdAt";
-    readonly updateAt: "updateAt";
+    readonly updatedAt: "updatedAt";
     readonly postId: "postId";
     readonly commentId: "commentId";
     readonly authorId: "authorId";
 };
 export type CommentScalarFieldEnum = (typeof CommentScalarFieldEnum)[keyof typeof CommentScalarFieldEnum];
+export declare const LikeScalarFieldEnum: {
+    readonly userId: "userId";
+    readonly postId: "postId";
+    readonly createdAt: "createdAt";
+};
+export type LikeScalarFieldEnum = (typeof LikeScalarFieldEnum)[keyof typeof LikeScalarFieldEnum];
+export declare const FollowScalarFieldEnum: {
+    readonly followerId: "followerId";
+    readonly followingId: "followingId";
+    readonly createdAt: "createdAt";
+};
+export type FollowScalarFieldEnum = (typeof FollowScalarFieldEnum)[keyof typeof FollowScalarFieldEnum];
 export declare const SortOrder: {
     readonly asc: "asc";
     readonly desc: "desc";

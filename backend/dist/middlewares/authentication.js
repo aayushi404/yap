@@ -4,7 +4,8 @@ import { verifyToken } from "../utils/jwt.js";
 const authenticationMiddleware = (req, res, next) => {
     try {
         const authorization = req.headers.authorization;
-        if (!authorization || authorization.startsWith("Bearer") || !authorization.split(" ")[1]) {
+        console.log(authorization);
+        if (!authorization || !authorization.startsWith("Bearer") || !authorization.split(" ")[1]) {
             throw new AppError("Invalid authorization header", StatusCodes.UNAUTHORIZED);
         }
         const token = authorization.split(" ")[1] || "";
@@ -12,8 +13,9 @@ const authenticationMiddleware = (req, res, next) => {
         req.user = { id: payload.userId };
         next();
     }
-    catch {
-        throw new AppError("Invalid token", StatusCodes.UNAUTHORIZED);
+    catch (err) {
+        if (err instanceof Error)
+            throw new AppError(err.message, StatusCodes.UNAUTHORIZED);
     }
 };
 export default authenticationMiddleware;

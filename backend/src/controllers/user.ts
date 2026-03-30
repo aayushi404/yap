@@ -44,6 +44,7 @@ const getUserFeed = async (req: AuthRequest, res: Response) => {
     userFollowingIds.push(req.user?.id!)
     const cursor = req.query.cursor
     const limit = Number(req.query.limit)
+
     if (limit > 20 || limit <= 0 ) {
         throw new AppError("Invalid limit value", StatusCodes.BAD_REQUEST)
     }

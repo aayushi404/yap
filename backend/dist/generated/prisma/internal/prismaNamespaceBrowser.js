@@ -41,9 +41,10 @@ export const AnyNull = runtime.AnyNull;
 export const ModelName = {
     User: 'User',
     Profile: 'Profile',
-    Content: 'Content',
     Post: 'Post',
-    Comment: 'Comment'
+    Comment: 'Comment',
+    Like: 'Like',
+    Follow: 'Follow'
 };
 /*
  * Enums
@@ -71,26 +72,33 @@ export const ProfileScalarFieldEnum = {
     updatedAt: 'updatedAt',
     userId: 'userId'
 };
-export const ContentScalarFieldEnum = {
+export const PostScalarFieldEnum = {
     id: 'id',
     text: 'text',
     media: 'media',
-    postId: 'postId',
-    commentId: 'commentId'
-};
-export const PostScalarFieldEnum = {
-    id: 'id',
     createdAt: 'createdAt',
-    updateAt: 'updateAt',
+    updatedAt: 'updatedAt',
     authorId: 'authorId'
 };
 export const CommentScalarFieldEnum = {
     id: 'id',
+    text: 'text',
+    media: 'media',
     createdAt: 'createdAt',
-    updateAt: 'updateAt',
+    updatedAt: 'updatedAt',
     postId: 'postId',
     commentId: 'commentId',
     authorId: 'authorId'
+};
+export const LikeScalarFieldEnum = {
+    userId: 'userId',
+    postId: 'postId',
+    createdAt: 'createdAt'
+};
+export const FollowScalarFieldEnum = {
+    followerId: 'followerId',
+    followingId: 'followingId',
+    createdAt: 'createdAt'
 };
 export const SortOrder = {
     asc: 'asc',

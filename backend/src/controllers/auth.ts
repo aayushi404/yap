@@ -2,7 +2,7 @@ import type { Request, Response } from "express";
 import type { LoginInput, SignupInput } from "../schema/validator.js";
 import prisma from "../utils/prismaCient.js";
 import { StatusCodes } from "http-status-codes";
-import {hashPassword} from "../utils/bcrypt.js";
+import {comparePassword, hashPassword} from "../utils/bcrypt.js";
 import { findUserByEmail, findUserByUsername } from "../services/database.user.js";
 import { AppError } from "../utils/appError.js";
 import { signJwt } from "../utils/jwt.js";
@@ -49,10 +49,14 @@ const login = async (req: Request, res: Response) => {
             throw new AppError("Invalid username", StatusCodes.UNAUTHORIZED)
         }
     }
+    if (user &&  !(await comparePassword(user?.password, req_body.password))) {
+        throw new AppError("Incorrect password", StatusCodes.UNAUTHORIZED)
+    }
 
     const token = signJwt({userId: user?.id!})
     return res.status(StatusCodes.ACCEPTED).json({
-        message: {token}
+        token: token,
+        userId: user?.id
     })
 }
 

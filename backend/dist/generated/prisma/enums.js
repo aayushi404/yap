@@ -7,9 +7,6 @@
 *
 * 🟢 You can import this file directly.
 */
-export const ContentType = {
-    TEXT: 'TEXT',
-    IMAGE: 'IMAGE',
-    VEDIO: 'VEDIO'
-};
+// This file is empty because there are no enums in the schema.
+export {};
 //# sourceMappingURL=enums.js.map
