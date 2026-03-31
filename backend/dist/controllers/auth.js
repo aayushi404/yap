@@ -47,7 +47,12 @@ const login = async (req, res) => {
     const token = signJwt({ userId: user?.id });
     return res.status(StatusCodes.ACCEPTED).json({
         token: token,
-        userId: user?.id
+        user: {
+            id: user?.id,
+            name: user?.name,
+            username: user?.username,
+            profileImage: user?.profile?.profileImage
+        }
     });
 };
 export { signup, login };

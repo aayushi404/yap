@@ -58,6 +58,19 @@ const getUserFeed = async (req: AuthRequest, res: Response) => {
         orderBy: {
             createdAt: "desc"
         },
+        include: {
+            author: {
+                select: {
+                    name: true,
+                    username:true,
+                    profile: {
+                        select: {
+                            profileImage:true
+                        }
+                    }
+                }
+            }
+        },
         take: limit,
         ...(cursor && {
             cursor: {id: Number(cursor)},

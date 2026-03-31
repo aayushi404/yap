@@ -6,6 +6,7 @@ import {comparePassword, hashPassword} from "../utils/bcrypt.js";
 import { findUserByEmail, findUserByUsername } from "../services/database.user.js";
 import { AppError } from "../utils/appError.js";
 import { signJwt } from "../utils/jwt.js";
+import type { userType } from "../schema/apiTypes.js";
 
 const signup =  async (req: Request, res: Response) => {
     const req_body:SignupInput = req.body
@@ -36,7 +37,7 @@ const signup =  async (req: Request, res: Response) => {
 
 const login = async (req: Request, res: Response) => {
     const req_body: LoginInput = req.body
-    let user:{ email: string; password: string; username: string; id: number; name: string; createdAt: Date; updatedAt: Date; } | null = null;
+    let user:userType | null = null;
     if (req_body.email) {
         user = await findUserByEmail(req_body.email)
         if (!user) {
@@ -56,7 +57,12 @@ const login = async (req: Request, res: Response) => {
     const token = signJwt({userId: user?.id!})
     return res.status(StatusCodes.ACCEPTED).json({
         token: token,
-        userId: user?.id
+        user : {
+            id: user?.id,
+            name: user?.name,
+            username:user?.username,
+            profileImage: user?.profile?.profileImage
+        }
     })
 }
 

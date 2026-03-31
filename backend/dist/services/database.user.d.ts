@@ -1,4 +1,8 @@
-declare const findUserById: (userId: number) => Promise<{
+declare const findUserById: (userId: number) => Promise<({
+    profile: {
+        profileImage: string;
+    } | null;
+} & {
     email: string;
     password: string;
     username: string;
@@ -6,8 +10,12 @@ declare const findUserById: (userId: number) => Promise<{
     name: string;
     createdAt: Date;
     updatedAt: Date;
-} | null>;
-declare const findUserByUsername: (username: string) => Promise<{
+}) | null>;
+declare const findUserByUsername: (username: string) => Promise<({
+    profile: {
+        profileImage: string;
+    } | null;
+} & {
     email: string;
     password: string;
     username: string;
@@ -15,8 +23,12 @@ declare const findUserByUsername: (username: string) => Promise<{
     name: string;
     createdAt: Date;
     updatedAt: Date;
-} | null>;
-declare const findUserByEmail: (email: string) => Promise<{
+}) | null>;
+declare const findUserByEmail: (email: string) => Promise<({
+    profile: {
+        profileImage: string;
+    } | null;
+} & {
     email: string;
     password: string;
     username: string;
@@ -24,6 +36,6 @@ declare const findUserByEmail: (email: string) => Promise<{
     name: string;
     createdAt: Date;
     updatedAt: Date;
-} | null>;
+}) | null>;
 export { findUserByEmail, findUserById, findUserByUsername };
 //# sourceMappingURL=database.user.d.ts.map

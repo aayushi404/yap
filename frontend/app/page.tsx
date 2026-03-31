@@ -1,34 +1,35 @@
 "use client"
-import Feed from "@/components/feed";
+import Feed from "@/components/Feed";
+import PostCard from "@/components/post/PostCard";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { Spinner } from "@/components/ui/spinner";
 import { useAuthStore } from "@/hooks/auth";
+import useFeed from "@/hooks/feed";
 import { getFeed } from "@/lib/api/post";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function Home() {
-  const {isAuthenticated, setIsAuthenticated} = useAuthStore((state) => state)
+  const user = useAuthStore((state) => state.user)
+  const _hasHydrated = useAuthStore((state) => state._hasHydrated)
   const router = useRouter()
-  if (!isAuthenticated) {
-    router.push("/login")
-  }
   useEffect(() => {
-    (async () => {
-      try {
-        const response = await getFeed()
-        console.log(response)
-      } catch (err) {
-        console.log(err)
-        if (err instanceof AxiosError) {
-          console.log(err.response?.data)
-        }
-      }
-    })()
+    if (_hasHydrated && !user) {
+      router.push("/login")
+    }
+    
+  }, [user, router, _hasHydrated])
 
-  }, [])
+  if (!_hasHydrated) {
+    return (<Spinner />)
+  }
+  if (!user) {
+    return null
+  }
   return (
-    <div className="">
-      <Feed />
+    <div>
+        <Feed />
     </div>
   );
 }

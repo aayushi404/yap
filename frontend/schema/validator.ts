@@ -22,6 +22,15 @@ const signupSchema = z.object({
 
 })
 
-export {loginSchema, signupSchema}
+const createPostSchema = z.object({
+    text: z.string()
+    .min(3, {message: "post should be atleast 3 characters long"})
+    .max(250, {message: "post should be less than 250 characters long"}).optional(),
+    media: z.array(z.string()).max(4, {message: "you can't upload more than 4 images"})
+})
+
+
+export {loginSchema, signupSchema, createPostSchema}
 export type LoginInput = z.infer<typeof loginSchema>
 export type SignupInput = z.infer<typeof signupSchema>
+export type CreatePostInput = z.infer<typeof createPostSchema>

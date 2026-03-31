@@ -27,7 +27,7 @@ import { useAuthStore } from "@/hooks/auth"
 import { useRouter } from "next/navigation"
 
 export default function LoginForm() {
-  const {login, setIsAuthenticated} = useAuthStore((state) => state)
+  const {login} = useAuthStore((state) => state)
   const router = useRouter()
 
   const form = useForm<LoginInput>({
@@ -47,13 +47,15 @@ export default function LoginForm() {
         const payload: {
           token: string,
           user: {
-            id: number
+            id: number,
+            name: string,
+            username: string,
+            profileImage: string
           }
         } = response.data
 
         login(payload.token, payload.user)
         localStorage.setItem("token", payload.token)
-        setIsAuthenticated(true)
         toast.success("Login Successfull!!")
         router.push('/')
       }
