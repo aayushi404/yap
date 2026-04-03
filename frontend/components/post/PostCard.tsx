@@ -9,6 +9,7 @@ type PostCardProps = {
     media?: []
 }
 const PostCard = ({postProps}: {postProps:FeedType}) => {
+    console.log(postProps)
     return (
         <div>
             <div>
@@ -22,10 +23,11 @@ const PostCard = ({postProps}: {postProps:FeedType}) => {
                     {postProps.media.map((img, idx) => (
                         <Image 
                             src={img}
-                            width={100}
-                            height={100}
+                            width={600}
+                            height={600}
                             alt=""
                             key={idx}
+                            unoptimized
                         />
                     ))}
                 </div>

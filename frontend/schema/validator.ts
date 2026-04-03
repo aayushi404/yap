@@ -6,7 +6,23 @@ const passwordSchema = z.string()
     .regex(/[0-9]/, { message: "Password must contain at least one number" })
     .regex(/[!@#$%^&*()_+={}\[\]|:;"'<,>.?/-]/, { message: "Password must contain at least one special character" })
 
- 
+const MAX_IMAGE_SIZE = 5 * 1024 * 1024
+export const MAX_MEDIA_UPLOAD = 4
+const ACCEPTED_MEDIA_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/gif"]
+
+const mediaUploadSchema = z
+  .array(z.instanceof(File))
+  .max(MAX_MEDIA_UPLOAD, `Maximum ${MAX_MEDIA_UPLOAD} media allowed`)
+  .refine(
+    (files) => files.every((f) => f.size <= MAX_IMAGE_SIZE),
+    "Each file must be <= 5MB"
+  )
+  .refine(
+    (files) => files.every((f) => ACCEPTED_MEDIA_TYPES.includes(f.type)),
+    "Invalid file type"
+  )
+  .optional()
+
 const loginSchema = z.object({
     username : z.string()
     .min(3, {message: "username must be atleast more than 3 letters"}).optional(),
@@ -25,8 +41,8 @@ const signupSchema = z.object({
 const createPostSchema = z.object({
     text: z.string()
     .min(3, {message: "post should be atleast 3 characters long"})
-    .max(250, {message: "post should be less than 250 characters long"}).optional(),
-    media: z.array(z.string()).max(4, {message: "you can't upload more than 4 images"})
+    .max(250, {message: "post should be less than 250 characters long"}),
+    media: mediaUploadSchema
 })
 
 

@@ -10,7 +10,7 @@ const upload = (req: AuthRequest, res: Response, next: NextFunction) => {
     if (media && Array.isArray(media)){
         const PORT = process.env.PORT || 8000
         return res.status(StatusCodes.CREATED).json({
-            media: media.map((data) => `http://localhost/${PORT}/${data.path}`)
+            media: media.map((data) => `http://localhost:${PORT}/${data.path}`)
         })
     }
     throw new AppError("Invalid file upload", StatusCodes.BAD_REQUEST)

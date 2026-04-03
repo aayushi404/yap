@@ -13,7 +13,7 @@ import userRouter from "./routes/user.js";
 const app = express();
 const upload_files = multer({ dest: "uploads" });
 const corsOptions = {
-    origin: ["http://localhost:3000"],
+    origin: ["http://localhost:3000", 'https://yap-six.vercel.app'],
     method: 'GET, POST, PUT, PATCH, DELETE',
     allowedHeaders: ['Content-Type', 'Authorization'],
     Credentials: true
@@ -26,7 +26,7 @@ app.use("/post", postRouter);
 app.use("/comment", commentRouter);
 app.use("/follow", followRouter);
 app.use("/user", userRouter);
-app.use(express.static("uploads"));
+app.use("/uploads", express.static("uploads"));
 app.post('/uploads', upload_files.array("media", 4), upload);
 app.use(GlobalErrorMiddleware);
 const PORT = process.env.PORT || "8000";

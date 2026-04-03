@@ -4,7 +4,7 @@ import { AuthStoreProvider } from "@/contexts/auth"
 import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query"
 import React from "react"
 
-const queryClient = new QueryClient()
+export const queryClient = new QueryClient()
 
 export default function Provider(
     {

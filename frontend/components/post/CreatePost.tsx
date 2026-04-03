@@ -1,11 +1,14 @@
 "use client"
 
 import * as React from "react"
+import { useEffect } from "react"
 import { useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Controller, useForm } from "react-hook-form"
 import { toast } from "sonner"
 import * as z from "zod"
+import Image from "next/image"
+import { useMutation } from "@tanstack/react-query"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -24,15 +27,22 @@ import {
   FieldLabel,
 } from "@/components/ui/field"
 import { Textarea } from "@/components/ui/textarea"
-import { createPostSchema } from "@/schema/validator"
+import { createPostSchema, MAX_MEDIA_UPLOAD } from "@/schema/validator"
 import type { CreatePostInput } from "@/schema/validator"
 import { Input } from "../ui/input"
 import { apiClient, api } from "@/lib/api/client"
 import { AxiosError } from "axios"
+import { uploadFiles } from "@/lib/api/upload"
+import { queryClient } from "@/app/providers"
+import { useCreatePost } from "@/hooks/cratePost"
+import { Spinner } from "../ui/spinner"
 
 
 export function CreatePost() {
-    const [diablePost, setDisablePost] = useState(true)
+  const [diablePost, setDisablePost] = useState(true)
+  const [files, setFiles] = useState<File[]>([])
+  const { createPost, isPending } = useCreatePost()
+
   const form = useForm<CreatePostInput>({
     resolver: zodResolver(createPostSchema as any),
     defaultValues: {
@@ -41,25 +51,34 @@ export function CreatePost() {
     },
   })
 
-  async function onSubmit(data: CreatePostInput) {
-    try {
-      await api.post("/post", data)
-      toast.success("Post created sucessfully!!")
-    } catch (err) {
-      console.log(err)
-      if (err instanceof AxiosError) {
-        const err_msg = err.response?.data.error as string
-        console.log(err_msg)
-        toast.error(err_msg)
-      }
+  const text = form.watch("text")
+
+  useEffect(() => {
+    setDisablePost(!text || text.length < 3)
+  }, [text])
+
+  useEffect(() => {
+    if (files.length > MAX_MEDIA_UPLOAD) {
+      toast.error("Too many files!!")
     }
+  }, [files])
+
+  async function onSubmit(data: CreatePostInput) {
+      createPost({
+      text: data.text,
+      files: files,
+    })
+      setFiles([])
+      form.reset()
+
+    
   }
 
   return (
     <Card className="w-full sm:max-w-md">
 
       <CardContent>
-        <form id="form-post" onSubmit={form.handleSubmit(onSubmit)} onChange={() => form.getValues("text") === ""? setDisablePost(true): setDisablePost(false)}>
+        <form id="form-post" onSubmit={form.handleSubmit(onSubmit)} >
           <FieldGroup>
             <Controller
               name="text"
@@ -74,22 +93,46 @@ export function CreatePost() {
                     placeholder="What's Happening?"
                     className="min-h-30"
                   />
-                 
+                
                   {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
+                    <FieldError errors={[fieldState.error]}/>
                   )}
                 </Field>
               )}
             />
+            <div>
+              {files.length > 0 ? files.map((file, idx) => (
+                <Image 
+                  src={URL.createObjectURL(file)}
+                  alt=""
+                  key={idx}
+                  width={600}
+                  height={600}
+                />
+              )) : null}
+            </div>
             <Controller 
                 name="media"
                 control={form.control}
                 render={({field, fieldState}) => (
+                  <Field data-invalid={fieldState.invalid}>
                     <Input 
-                    {...field}
-                    id="form-media"
-                    type="file"
+                      id="form-media"
+                      type="file"
+                      multiple
+                      className="w-8"
+                      onChange={(e) => {
+                        const selectedFiles = Array.from(e.target.files || [])
+                        setFiles(selectedFiles)
+                        field.onChange(selectedFiles)
+                      }}
+                      onBlur={field.onBlur}
+                      ref={field.ref}
                     />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]}/>
+                    )}
+                  </Field>
                 )}
             />
           </FieldGroup>
@@ -97,8 +140,9 @@ export function CreatePost() {
       </CardContent>
       <CardFooter>
         <Field orientation="horizontal">
-          <Button type="submit" form="form-post" disabled={diablePost}>
-            Post
+          <Button type="submit" form="form-post" disabled={diablePost || isPending}>
+            {isPending && (<Spinner data-icon="inline-start" />)}
+            {isPending ? "Uploading...." : "Post"}
           </Button>
         </Field>
       </CardFooter>
