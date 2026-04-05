@@ -69,6 +69,11 @@ const getUserFeed = async (req: AuthRequest, res: Response) => {
                         }
                     }
                 }
+            },
+            likes: {
+                select: {
+                    userId: true
+                }
             }
         },
         take: limit,
@@ -77,11 +82,92 @@ const getUserFeed = async (req: AuthRequest, res: Response) => {
             skip: 1
         })
     })
+
+    type PostType = {
+        likes: number,
+        isLikedByMe: boolean,
+        author : {
+            name: string,
+            username: string,
+            profileImage: string | null
+        },
+        id: number,
+        createdAt : Date,
+        text: string | null,
+        media: string[],
+        authorId: number
+    }
+    const result: PostType[] = posts.map(post => {
+        return {
+            likes: post.likes.length,
+            isLikedByMe: post.likes.map(like => like.userId).includes(req.user?.id!),
+            author: {
+                name: post.author.name,
+                username: post.author.username,
+                profileImage: post.author.profile? post.author.profile.profileImage : null
+            },
+            id: post.id,
+            createdAt: post.createdAt,
+            text: post.text,
+            media: post.media,
+            authorId: post.authorId
+    }})
+
     const lastPositionCursor = posts.at(-1)?.id
     return res.status(StatusCodes.OK).json({
-        posts,
+        result,
         nextCursor: posts.length === limit ? lastPositionCursor : null
     })
 }
 
-export {getUserFeed, getUserFollower, getUserFollowing, getUserPost}
+type userProfile = {
+    profile: {
+        name: string;
+        id: number;
+        updatedAt: Date;
+        bio: string | null;
+        profileImage: string;
+        userId: number;
+    } | null;
+} & {
+    createdAt: Date;
+    name: string;
+    id: number;
+    updatedAt: Date;
+    username: string;
+    email: string;
+    password: string;
+}
+
+const fetchProfile = async (req: AuthRequest, res: Response) => {
+    const username = req.query.username
+    const userId = Number(req.query.userId)
+
+    let user: userProfile | null = null
+    if (username) {
+        user = await prisma.user.findFirst({
+            where: {
+                username: username as string
+            },
+            include: {
+                profile: true
+            }
+        })
+    } else if (userId) {
+        user = await prisma.user.findFirst({
+            where: {
+                id: userId
+            }, 
+            include : {
+                profile: true
+            }
+        })
+    }
+    if (!user) {
+        new AppError("profile not found", StatusCodes.NOT_FOUND)
+    }
+
+    return res.status(StatusCodes.OK).json(user)
+}
+
+export {getUserFeed, getUserFollower, getUserFollowing, getUserPost, fetchProfile}
