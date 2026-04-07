@@ -7,6 +7,7 @@ const getFeed = async (cursor?:number) => {
         posts:FeedType[], 
         nextCursor:string
     }>(url)
+    console.log(response.data)
     return response.data
 }
 

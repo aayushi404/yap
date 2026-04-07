@@ -75,23 +75,20 @@ export function CreatePost() {
   }
 
   return (
-    <Card className="w-full sm:max-w-md">
-
-      <CardContent>
+    <div className="sm:w-150 mx-auto mt-1">
         <form id="form-post" onSubmit={form.handleSubmit(onSubmit)} >
-          <FieldGroup>
             <Controller
               name="text"
               control={form.control}
               render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
+                <Field data-invalid={fieldState.invalid} className="border-none">
                   
                   <Textarea
                     {...field}
                     id="form-text"
                     aria-invalid={fieldState.invalid}
                     placeholder="What's Happening?"
-                    className="min-h-30"
+                    className="min-h-20 border-none text-2xl"
                   />
                 
                   {fieldState.invalid && (
@@ -111,11 +108,12 @@ export function CreatePost() {
                 />
               )) : null}
             </div>
+            <div className="flex justify-between gap-1">
             <Controller 
                 name="media"
                 control={form.control}
                 render={({field, fieldState}) => (
-                  <Field data-invalid={fieldState.invalid}>
+                  <Field data-invalid={fieldState.invalid} className="w-10 py-2">
                     <Input 
                       id="form-media"
                       type="file"
@@ -135,17 +133,18 @@ export function CreatePost() {
                   </Field>
                 )}
             />
-          </FieldGroup>
-        </form>
-      </CardContent>
-      <CardFooter>
-        <Field orientation="horizontal">
-          <Button type="submit" form="form-post" disabled={diablePost || isPending}>
+        
+          <Button 
+          type="submit" form="form-post" disabled={diablePost || isPending}
+          className="rounded-2xl hover:cursor-pointer my-2 w-15"
+          size={"lg"}
+          >
             {isPending && (<Spinner data-icon="inline-start" />)}
             {isPending ? "Uploading...." : "Post"}
+            
           </Button>
-        </Field>
-      </CardFooter>
-    </Card>
+          </div>
+        </form>
+    </div>
   )
 }

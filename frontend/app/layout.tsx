@@ -27,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${fontSans.variable} ${fontSerif.variable} antialiased`}>
+      <body className={`${fontSans.variable} ${fontSerif.variable} antialiased dark`}>
         <Provider>{children}</Provider>
         <Toaster />
       </body>

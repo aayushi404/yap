@@ -115,7 +115,7 @@ const getUserFeed = async (req: AuthRequest, res: Response) => {
 
     const lastPositionCursor = posts.at(-1)?.id
     return res.status(StatusCodes.OK).json({
-        result,
+        posts: result,
         nextCursor: posts.length === limit ? lastPositionCursor : null
     })
 }
