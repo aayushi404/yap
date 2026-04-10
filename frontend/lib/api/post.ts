@@ -7,11 +7,8 @@ const getFeed = async (cursor?:number) => {
         posts:FeedType[], 
         nextCursor:string
     }>(url)
-    console.log(response.data)
+    console.log(response.data   )
     return response.data
 }
 
-const createPost = async () => {
-    
-}
 export {getFeed}

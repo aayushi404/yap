@@ -4,7 +4,6 @@ import { verifyToken } from "../utils/jwt.js";
 const authenticationMiddleware = (req, res, next) => {
     try {
         const authorization = req.headers.authorization;
-        console.log(authorization);
         if (!authorization || !authorization.startsWith("Bearer") || !authorization.split(" ")[1]) {
             throw new AppError("Invalid authorization header", StatusCodes.UNAUTHORIZED);
         }

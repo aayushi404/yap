@@ -168,4 +168,20 @@ const getComments = async (req: AuthRequest, res: Response) => {
     return res.status(StatusCodes.OK).json({comment})
 }
 
-export {createComment, updateComment, deleteComment, getComments}
+const getPostComments = async (req: AuthRequest, res: Response) => {
+    const postId: number = Number(req.params.postId)
+    console.log(postId)
+
+    const postComments = await prisma.comment.findMany({
+        where: {
+            postId: postId
+        },
+        include : {
+            comments: true
+        }
+    })
+
+    return res.status(StatusCodes.OK).json({postComments})
+}
+
+export {createComment, updateComment, deleteComment, getComments, getPostComments}

@@ -12,6 +12,6 @@ postRouter.post("/", authenticationMiddleware, zodValidatorMiddlware(createPostS
 postRouter.patch("/:id", authenticationMiddleware, zodValidatorMiddlware(createPostSchema), asyncHandler(updatePost))
 postRouter.delete("/:id", authenticationMiddleware, asyncHandler(deletePost))
 postRouter.get("/like/:id", authenticationMiddleware, asyncHandler(likePost))
-postRouter.delete("like/:id", authenticationMiddleware, asyncHandler(dislikePost))
+postRouter.delete("/dislike/:id", authenticationMiddleware, asyncHandler(dislikePost))
 
 export default postRouter

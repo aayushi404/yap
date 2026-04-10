@@ -45,8 +45,18 @@ const createPostSchema = z.object({
     media: mediaUploadSchema
 })
 
+const createCommentSchema = z.object({
+    text: z.string()
+    .min(3, {message: "post should be atleast 3 characters long"})
+    .max(250, {message: "post should be less than 250 characters long"}).optional(),
+    media: mediaUploadSchema,
+    postId: z.number().optional(),
+    commentId: z.number().optional()
+})
 
-export {loginSchema, signupSchema, createPostSchema}
+
+export {loginSchema, signupSchema, createPostSchema, createCommentSchema}
 export type LoginInput = z.infer<typeof loginSchema>
 export type SignupInput = z.infer<typeof signupSchema>
 export type CreatePostInput = z.infer<typeof createPostSchema>
+export type createCommentInput = z.infer<typeof createCommentSchema>

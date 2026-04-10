@@ -13,4 +13,25 @@ type FeedType  = {
         authorId: number
     }
 
-export type {FeedType}
+type PostCommentsType = {
+    comments: {
+        id: number;
+        text: string | null;
+        media: string[];
+        createdAt: Date;
+        updatedAt: Date;
+        authorId: number;
+        postId: number | null;
+        commentId: number | null;
+    }[];
+} & {
+    id: number;
+    text: string | null;
+    media: string[];
+    createdAt: Date;
+    updatedAt: Date;
+    authorId: number;
+    postId: number | null;
+    commentId: number | null;
+}
+export type {FeedType, PostCommentsType}

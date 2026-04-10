@@ -2,10 +2,30 @@ import Image from "next/image"
 import type { FeedType } from "@/schema/api"
 import Link from "next/link"
 import { createTime } from "@/lib/services"
+import { HeartIcon } from "@phosphor-icons/react"
+import { useLikePost } from "@/hooks/likePost"
+import { useState } from "react"
+import { useRouter } from "next/navigation"
 
 const PostCard = ({postProps}: {postProps:FeedType}) => {
+    const router = useRouter()
+    const { likePost, unlikePost, isPending }= useLikePost()
+    const [liked, setLiked] = useState(postProps.isLikedByMe)
+
+    function likeClickHandler()  {
+        if (liked) {
+            unlikePost(postProps.id)
+        }else {
+            likePost(postProps.id)
+        }
+        setLiked(!liked)
+    }
+
+    function openPost() {
+        router.push(`/${postProps.author.username}/status/${postProps.id}`)
+    }
     return (
-        <div className="flex flex-col gap-2 border-t border-b py-2 border-t-neutral-800">
+        <div className="flex flex-col gap-2 border-t border-b py-2 border-t-neutral-800 hover:cursor-pointer" onClick={openPost}>
             <div className="flex">
                 <div>{postProps.author.profileImage && (
                     <Image 
@@ -98,6 +118,12 @@ const PostCard = ({postProps}: {postProps:FeedType}) => {
                     )}
                 </div>
             )}
+            <div>
+                <button className={`flex gap-1 items-center cursor-pointer hover:text-pink-600 ${liked && "text-pink-600"}`} onClick={likeClickHandler}>
+                    <HeartIcon size={26} />
+                    <span>{postProps.likes}</span>
+                </button>
+            </div>
         </div>
     )
 }

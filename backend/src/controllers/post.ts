@@ -103,7 +103,7 @@ const dislikePost = async (req: AuthRequest, res: Response) => {
            }
         }
     })
-    return res.status(StatusCodes.OK).json({
+    return res.status(StatusCodes.CREATED).json({
         message: "Successfully deleted the like"
     })
 }

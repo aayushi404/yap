@@ -88,7 +88,7 @@ export function CreatePost() {
                     id="form-text"
                     aria-invalid={fieldState.invalid}
                     placeholder="What's Happening?"
-                    className="min-h-20 border-none text-2xl"
+                    className="border-none text-2xl min-h-20"
                   />
                 
                   {fieldState.invalid && (
