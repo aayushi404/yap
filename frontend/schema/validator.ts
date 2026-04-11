@@ -49,7 +49,7 @@ const createCommentSchema = z.object({
     text: z.string()
     .min(3, {message: "post should be atleast 3 characters long"})
     .max(250, {message: "post should be less than 250 characters long"}).optional(),
-    media: mediaUploadSchema,
+    media: z.array(z.string()),
     postId: z.number().optional(),
     commentId: z.number().optional()
 })

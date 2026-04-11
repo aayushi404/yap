@@ -8,7 +8,12 @@ const getFeed = async (cursor?:number) => {
         nextCursor:string
     }>(url)
     console.log(response.data   )
-    return response.data
+    return response.data.posts
 }
 
-export {getFeed}
+const getPost = async (postId: number) => {
+    const post = await api.get<{post:FeedType}>(`/post/${postId}`)
+    return post.data.post
+}
+
+export {getFeed, getPost}

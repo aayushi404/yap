@@ -1,9 +1,11 @@
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import { queryClient } from "@/app/providers"
 import { uploadFiles } from "@/lib/api/upload"
 import { api } from "@/lib/api/client"
 import { toast } from "sonner"
 import { AxiosError } from "axios"
+import { getPost } from "@/lib/api/post"
+import { FeedType } from "@/schema/api"
 
 type CreatePostPayload = {
     text: string,
@@ -41,4 +43,12 @@ export const useCreatePost = () => {
     isPending: mutation.isPending,
   }
 
+}
+
+export const usePost = (postId:number) => {
+    const {isPending, error, data} = useQuery({
+        queryKey:["post", postId],
+        queryFn: () => getPost(postId)
+    })
+    return {isPending, error, data}
 }

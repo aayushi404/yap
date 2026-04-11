@@ -36,6 +36,7 @@ import { uploadFiles } from "@/lib/api/upload"
 import { queryClient } from "@/app/providers"
 import { useCreatePost } from "@/hooks/cratePost"
 import { Spinner } from "../ui/spinner"
+import { MediaPost } from "../mediaPost"
 
 
 export function CreatePost() {
@@ -98,15 +99,7 @@ export function CreatePost() {
               )}
             />
             <div>
-              {files.length > 0 ? files.map((file, idx) => (
-                <Image 
-                  src={URL.createObjectURL(file)}
-                  alt=""
-                  key={idx}
-                  width={600}
-                  height={600}
-                />
-              )) : null}
+              {files.length > 0 ? (<MediaPost media={files.map(f => URL.createObjectURL(f))}/>) : null}
             </div>
             <div className="flex justify-between gap-1">
             <Controller 

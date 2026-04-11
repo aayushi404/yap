@@ -11,7 +11,7 @@ const Feed = () => {
         <CreatePost />
         {isPending && (<Spinner className="size-8" />)}
         <div className="">
-            {data && data.posts.map((post) => (
+            {data && data.map((post) => (
                 <PostCard postProps={post} key={post.id}/>
             ))}
         </div>

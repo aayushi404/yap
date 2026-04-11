@@ -6,6 +6,7 @@ import { HeartIcon } from "@phosphor-icons/react"
 import { useLikePost } from "@/hooks/likePost"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { MediaPost } from "../mediaPost"
 
 const PostCard = ({postProps}: {postProps:FeedType}) => {
     const router = useRouter()
@@ -26,7 +27,7 @@ const PostCard = ({postProps}: {postProps:FeedType}) => {
     }
     return (
         <div className="flex flex-col gap-2 border-t border-b py-2 border-t-neutral-800 hover:cursor-pointer" onClick={openPost}>
-            <div className="flex">
+            <div className="flex z-1000">
                 <div>{postProps.author.profileImage && (
                     <Image 
                     src={postProps.author.profileImage}
@@ -46,79 +47,8 @@ const PostCard = ({postProps}: {postProps:FeedType}) => {
             <div className="mx-auto sm:w-150">{postProps.text}</div>
 
             {postProps.media.length !== 0 && 
-            (
-                <div className="sm:w-150 aspect-video grid gap-1 overflow-hidden rounded-xl mx-auto border border-neutral-500">
-                    {postProps.media.length === 1 && (
-                        <div className="relative w-full h-full">
-                            <Image
-                                src={postProps.media[0]}
-                                alt=""
-                                fill
-                                unoptimized
-                                className="object-cover"
-                            />
-                        </div>
-                    )}
-
-                    {postProps.media.length === 2 && (
-                        <div className="grid grid-cols-2">
-                        {postProps.media.map((img, idx) => (
-                            <div key={idx} className="relative w-full h-full">
-                            <Image
-                                src={img}
-                                alt=""
-                                fill
-                                unoptimized
-                                className="object-cover"
-                            />
-                            </div>
-                        ))}
-                        </div>
-                    )}
-
-                    {postProps.media.length === 3 && (
-                        <div className="grid grid-cols-2 grid-rows-2">
-                        <div className="relative row-span-2">
-                            <Image
-                            src={postProps.media[0]}
-                            alt=""
-                            fill
-                            unoptimized
-                            className="object-cover"
-                            />
-                        </div>
-
-                        {postProps.media.slice(1).map((img, idx) => (
-                            <div key={idx} className="relative w-full h-full">
-                            <Image
-                                src={img}
-                                alt=""
-                                fill
-                                unoptimized
-                                className="object-cover"
-                            />
-                            </div>
-                        ))}
-                        </div>
-                    )}
-                    {postProps.media.length === 4 && (
-                        <div className="grid grid-cols-2 grid-rows-2">
-                            {postProps.media.map((img, idx) => (
-                                <div key={idx} className="relative w-full h-full">
-                                <Image
-                                    src={img}
-                                    alt=""
-                                    fill
-                                    unoptimized
-                                    className="object-cover"
-                                />
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </div>
-            )}
-            <div>
+            (<MediaPost media={postProps.media}/>)}
+            <div className="z-1000">
                 <button className={`flex gap-1 items-center cursor-pointer hover:text-pink-600 ${liked && "text-pink-600"}`} onClick={likeClickHandler}>
                     <HeartIcon size={26} />
                     <span>{postProps.likes}</span>

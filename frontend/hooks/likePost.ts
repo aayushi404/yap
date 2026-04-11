@@ -30,31 +30,26 @@ export const useLikePost = () => {
 
             const prevPosts = queryClient.getQueryData(["fetchFeed"])
 
-            queryClient.setQueryData(["fetchFeed"], (old: {posts:FeedType[], nextCursor:string}|undefined) => {
+            queryClient.setQueryData(["fetchFeed"], (old: FeedType[]|undefined) => {
+            
                 if (!old) return old
 
                 if (task === "like") {
-                    return {
-                        posts: old.posts.map(post => {
+                    return old.map(post => {
                                     if (post.id === postId) {
                                         return {...post, likes: post.likes+1, isLikedByMe: true}
                                     } else {
                                         return post
                                     }
-                                }),
-                        nextCursor: old.nextCursor
-                    }
+                                })
                 }else {
-                    return {
-                        posts: old.posts.map(post => {
+                    return old.map(post => {
                         if (post.id === postId) {
                             return {...post, likes: post.likes - 1, isLikedByMe: false}
                         } else {
                             return post
                         }
-                        }),
-                        nextCursor: old.nextCursor
-                    }
+                        })
                 }
             })
             return prevPosts

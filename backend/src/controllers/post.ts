@@ -131,4 +131,64 @@ const getPostWithComments = async (req: AuthRequest, res: Response) => {
     return res.status(StatusCodes.OK).json({post})
 }
 
-export {createPost, updatePost, deletePost, likePost, dislikePost, getPostWithComments}
+const getPost = async (req: AuthRequest, res: Response) => {
+    const postId = Number(req.params.postId)
+    const post = await prisma.post.findFirst({
+        where: {
+            id: postId
+        },
+        include: {
+            author: {
+                select : {
+                    name:true,
+                    username: true,
+                    profile: {
+                        select: {
+                            profileImage: true
+                        }
+                    }
+                }
+            },
+            likes: {
+                select: {
+                    userId: true
+                }
+            }
+        }
+    })
+    type PostType = {
+        likes: number,
+        isLikedByMe: boolean,
+        author : {
+            name: string,
+            username: string,
+            profileImage: string | null
+        },
+        id: number,
+        createdAt : Date,
+        text: string | null,
+        media: string[],
+        authorId: number
+    }
+    if (!post) {
+        throw new AppError("Invalid post id", StatusCodes.BAD_REQUEST)
+    }
+
+    const resData: PostType = {
+        likes: post.likes.length,
+        isLikedByMe: post.likes.map((like) => like.userId).includes(req.user?.id!),
+        author: {
+            name: post.author.name,
+            username: post.author.username,
+            profileImage: post.author.profile ? post.author.profile.profileImage : null,
+        },
+        id: post.id,
+        createdAt: post.createdAt,
+        text: post.text,
+        media: post.media,
+        authorId: post.authorId
+    }
+    return res.status(StatusCodes.OK).json({post: resData})
+}
+
+export {createPost, updatePost, deletePost, likePost, dislikePost, getPostWithComments, getPost}
