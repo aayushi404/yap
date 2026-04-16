@@ -7,6 +7,6 @@ export const createComment = async (comment: createCommentInput) => {
 }
 
 export const getPostComments = async (postId: number) => {
-    const comments = await api.get<PostCommentsType>(`/comment/post/${postId}`)
-    return comments.data
+    const comments = await api.get<{postComments:PostCommentsType[]}>(`/comment/post/${postId}`)
+    return comments.data.postComments
 }

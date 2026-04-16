@@ -1,6 +1,6 @@
 "use client"
 import Feed from "@/components/Feed";
-import PostCard from "@/components/post/PostCard";
+import PostCard from "@/components/post/FeedPostCard";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { Spinner } from "@/components/ui/spinner";
 import { useAuthStore } from "@/hooks/auth";

@@ -20,15 +20,18 @@ export const useLikePost = () => {
             }
         },
 
-        onSuccess: () => {
+        onSuccess: (_data, variables) => {
             queryClient.invalidateQueries({queryKey: ["fetchFeed"]})
+            queryClient.invalidateQueries({queryKey: ["post", variables.postId]})
         },
 
         onMutate: ({postId, task}: LikePostType) => {
 
             queryClient.cancelQueries({queryKey: ["fetchFeed"]})
+            queryClient.cancelQueries({queryKey: ["post", postId]})
 
             const prevPosts = queryClient.getQueryData(["fetchFeed"])
+            const prevPost = queryClient.getQueryData(["post", postId])
 
             queryClient.setQueryData(["fetchFeed"], (old: FeedType[]|undefined) => {
             
@@ -52,11 +55,24 @@ export const useLikePost = () => {
                         })
                 }
             })
-            return prevPosts
+
+            queryClient.setQueryData(["post", postId], (old: FeedType | undefined) => {
+                if (!old) return old
+                
+                if (task === "like") {
+                    return {...old, likes: old.likes + 1, isLikedByMe: true}
+                } else {
+                    return {...old, likes: old.likes - 1, isLikedByMe: false}
+                }
+            })
+            return {prevPosts, prevPost}
         },
         onError: (error, _variables, context) => {
-            if (context) {
-                queryClient.setQueryData(["fetchFeed"], context)
+            if (context?.prevPosts) {
+                queryClient.setQueryData(["fetchFeed"], context.prevPosts)
+            }
+            if (context?.prevPost) {
+                queryClient.setQueryData(["post", _variables.postId], context.prevPost)
             }
             console.log(error)
             if (error instanceof AxiosError) {

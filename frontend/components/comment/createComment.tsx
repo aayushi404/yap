@@ -69,6 +69,8 @@ export const CreateCommentCard = ({commentType, id, postId}: {commentType: "post
                 postId
             })
         }
+        setFiles([])
+        form.reset()
     }
 
     return (

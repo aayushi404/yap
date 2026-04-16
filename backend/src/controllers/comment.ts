@@ -177,7 +177,36 @@ const getPostComments = async (req: AuthRequest, res: Response) => {
             postId: postId
         },
         include : {
-            comments: true
+            comments: {
+                select: {
+                    author: {
+                        select: {
+                            name: true,
+                            username: true,
+                            profile: {
+                                select: {
+                                    profileImage: true
+                                }
+                            }
+                        }
+                    },
+                    id: true,
+                    text: true,
+                    media: true,
+                    createdAt: true
+                }
+            },
+            author: {
+                select: {
+                    name: true,
+                    username: true,
+                    profile: {
+                        select: {
+                            profileImage: true
+                        }
+                    }
+                }
+            }
         }
     })
 

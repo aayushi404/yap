@@ -1,5 +1,5 @@
 import useFeed from "@/hooks/feed"
-import PostCard from "./post/PostCard"
+import FeedPostCard from "./post/FeedPostCard"
 import { CreatePost } from "./post/CreatePost"
 import { Spinner } from "./ui/spinner"
 
@@ -12,7 +12,7 @@ const Feed = () => {
         {isPending && (<Spinner className="size-8" />)}
         <div className="">
             {data && data.map((post) => (
-                <PostCard postProps={post} key={post.id}/>
+                <FeedPostCard postProps={post} key={post.id}/>
             ))}
         </div>
     </div>

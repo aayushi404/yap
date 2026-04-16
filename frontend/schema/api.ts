@@ -19,19 +19,29 @@ type PostCommentsType = {
         text: string | null;
         media: string[];
         createdAt: Date;
-        updatedAt: Date;
-        authorId: number;
-        postId: number | null;
-        commentId: number | null;
+        author: {
+            name: string;
+            username: string;
+            profile: {
+                profileImage: string;
+            } | null;
+        };
     }[];
+    author: {
+        name: string;
+        username: string;
+        profile: {
+            profileImage: string;
+        } | null;
+    };
 } & {
     id: number;
     text: string | null;
     media: string[];
     createdAt: Date;
     updatedAt: Date;
-    authorId: number;
     postId: number | null;
     commentId: number | null;
+    authorId: number;
 }
 export type {FeedType, PostCommentsType}

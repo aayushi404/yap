@@ -48,7 +48,11 @@ export const useCreatePost = () => {
 export const usePost = (postId:number) => {
     const {isPending, error, data} = useQuery({
         queryKey:["post", postId],
-        queryFn: () => getPost(postId)
+        queryFn: () => getPost(postId),
+        initialData: () => {
+            const feed : FeedType[]|undefined = queryClient.getQueryData(["fetchFeed"])
+            return feed?.find(p => p.id === postId)
+        }
     })
     return {isPending, error, data}
 }

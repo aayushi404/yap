@@ -28,3 +28,15 @@ export function createTime(createdAt: Date) {
         return `${day} ${month}`
     }
     
+export function getFullTime(createdAt: Date) {
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    const hour24 = createdAt.getHours()
+    const hour = hour24 % 12 || 12
+    const minute = String(createdAt.getMinutes()).padStart(2, '0')
+    const ampm = hour24 >= 12 ? 'PM' : 'AM'
+    const month = monthNames[createdAt.getMonth()]
+    const day = createdAt.getDate()
+    const year = createdAt.getFullYear()
+    return `${hour}:${minute} ${ampm} · ${month} ${day}, ${year}`
+}

@@ -1,5 +1,6 @@
 "use client"
 import { queryClient } from "@/app/providers"
+import Comments from "@/components/comment/comments"
 import { CreateCommentCard } from "@/components/comment/createComment"
 import PostCard from "@/components/post/PostCard"
 import { usePost } from "@/hooks/cratePost"
@@ -11,16 +12,16 @@ export default function Post({
 }: {
     params: Promise<{post: string}>
 }) {
-    const {post: postId} = use(params)
+    let {post: postId} = use(params)
     const {isPending: isPostPending, error: postError, data: post} = usePost(Number(postId))
     console.log(post)
     const {isPending: isCommentPending, error: commentError, data: comments} = useComment(Number(postId))
     
     return (
-        <div>
+        <div className="mx-auto sm:w-175 border-x border-neutral-700 mt-2">
             {post && <PostCard postProps={post}/>}
             <CreateCommentCard commentType="postComment" id={Number(postId)} postId={Number(postId)}/>
-            postComment
+            <Comments postId={Number(postId)}/>
         </div>
     )
 }
