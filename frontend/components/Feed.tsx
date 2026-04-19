@@ -7,7 +7,8 @@ const Feed = () => {
   const {isPending, error, data} = useFeed()
   
     return (
-    <div className="mx-auto sm:w-175 border border-neutral-700 mt-2">
+    
+    <div className="mx-auto sm:w-175 border border-neutral-700">
         <CreatePost />
         {isPending && (<Spinner className="size-8" />)}
         <div className="">

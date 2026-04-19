@@ -3,27 +3,17 @@ import Link from "next/link"
 import { createTime } from "@/lib/services"
 import { MediaPost } from "../mediaPost"
 import { getFullTime } from "@/lib/services"
+import { CommentType } from "@/schema/api"
 
-type CommentCardType = {
-    id: Number,
-    text: string | null,
-    media: string[],
-    createdAt: Date,
-    author: {
-        name: string,
-        username: string,
-        profileImage: string | null
-    },
-    replies: CommentCardType
-}
-const CommentCard = ({commentCardProps}: {commentCardProps: CommentCardType}) => {
+
+const CommentCard = ({commentCardProps}: {commentCardProps: CommentType}) => {
     return (
-        <div>
-            <div>
+        <div className="flex flex-col gap-2 border-t border-b py-2 border-t-neutral-800 ">
+            <div className="flex flex-col gap-2 py-2 mx-auto sm:w-150">
                 <div className="flex">
-                    <div>{commentCardProps.author.profileImage && (
+                    <div>{commentCardProps.author.profile?.profileImage && (
                         <Image 
-                        src={commentCardProps.author.profileImage}
+                        src={commentCardProps.author.profile.profileImage}
                         alt=""
                         width={30}
                         height={30}

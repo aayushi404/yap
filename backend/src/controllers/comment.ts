@@ -150,52 +150,30 @@ const deleteComment = async (req: AuthRequest, res: Response) => {
     })
 }
 
-const getComments = async (req: AuthRequest, res: Response) => {
-   const commentId : number = Number(req.params.commentId)
-   
-   const comment = await prisma.comment.findFirst({
-    where: {
-        id : commentId
-    },
-    include: {
-        comments: true
-    }
-   })
-    if (!comment) {
-        throw new AppError("Invalid comment id", StatusCodes.BAD_REQUEST)
-    }
-
-    return res.status(StatusCodes.OK).json({comment})
-}
-
 const getPostComments = async (req: AuthRequest, res: Response) => {
     const postId: number = Number(req.params.postId)
     console.log(postId)
 
+    const limit = Number(req.query.limit)
+    if (limit > 20 || limit < 0) {
+        throw new AppError("Invalid limit value", StatusCodes.BAD_REQUEST)
+    }
+    const cursor = req.query.cursor
+    
     const postComments = await prisma.comment.findMany({
         where: {
-            postId: postId
+            postId: postId,
+            commentId: null
         },
-        include : {
-            comments: {
-                select: {
-                    author: {
-                        select: {
-                            name: true,
-                            username: true,
-                            profile: {
-                                select: {
-                                    profileImage: true
-                                }
-                            }
-                        }
-                    },
-                    id: true,
-                    text: true,
-                    media: true,
-                    createdAt: true
-                }
-            },
+        orderBy: {
+            createdAt: "desc"
+        },
+        take: limit,
+        ...(cursor && {
+            cursor: {id: Number(cursor)},
+            skip: 1
+        }),
+        include: {
             author: {
                 select: {
                     name: true,
@@ -206,11 +184,90 @@ const getPostComments = async (req: AuthRequest, res: Response) => {
                         }
                     }
                 }
+            },
+            _count: {
+                select: {comments: true}
             }
         }
     })
 
-    return res.status(StatusCodes.OK).json({postComments})
+    const nextCursor = postComments.at(-1)?.id
+    return res.status(StatusCodes.OK).json({
+        comments: postComments,
+        nextCursor: postComments.length === limit ? nextCursor : null
+    })
 }
 
-export {createComment, updateComment, deleteComment, getComments, getPostComments}
+const getCommentReplies = async (req: AuthRequest, res: Response) => {
+    const commentId = Number(req.params.commentId)
+
+    const limit = Number(req.query.limit)
+    if (limit > 20 || limit < 0) {
+        throw new AppError("Invalid limit value", StatusCodes.BAD_REQUEST)
+    }
+
+    const cursor = Number(req.query.cursor)
+
+    const commentReplies = await prisma.comment.findMany({
+        where: {
+            commentId: commentId
+        },
+        orderBy: {
+            createdAt: "desc"
+        },
+        take: limit,
+        ...(cursor && {
+            cursor: {id: Number(cursor)},
+            skip: 1
+        }),
+        include: {
+            author: {
+                select: {
+                    name: true,
+                    username: true,
+                    profile: {
+                        select: {
+                            profileImage: true
+                        }
+                    }
+                }
+            },
+            _count: {
+                select: {comments: true}
+            }
+        }
+ 
+    })
+    const nextCursor = commentReplies.at(-1)?.id
+    return res.status(StatusCodes.OK).json({
+        replies: commentReplies,
+        nextCursor: commentReplies.length === limit ? nextCursor : null
+    })
+
+}
+const getComment = async (req: AuthRequest, res: Response) => {
+    const commentId = Number(req.params.commentId)
+    const comment = await prisma.comment.findFirst({
+        where: {
+            id: commentId
+        },
+        include:{
+            author: {
+                select: {
+                    name: true,
+                    username: true,
+                    profile: {
+                        select: {
+                            profileImage: true
+                        }
+                    }
+                }
+            },
+            _count: {
+                select: {comments: true}
+            }
+        }
+    })
+    return res.status(StatusCodes.OK).json({comment})
+}
+export {createComment, updateComment, deleteComment,getComment, getPostComments, getCommentReplies}

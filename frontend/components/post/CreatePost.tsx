@@ -34,7 +34,7 @@ import { apiClient, api } from "@/lib/api/client"
 import { AxiosError } from "axios"
 import { uploadFiles } from "@/lib/api/upload"
 import { queryClient } from "@/app/providers"
-import { useCreatePost } from "@/hooks/cratePost"
+import { useCreatePost } from "@/hooks/usePost"
 import { Spinner } from "../ui/spinner"
 import { MediaPost } from "../mediaPost"
 

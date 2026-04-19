@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthStoreProvider } from "@/contexts/auth";
 import Provider from "./providers";
+import FeedSidebar from "@/components/sidebar/FeedSidebar";
 
 const fontSans = Geist({
   subsets: ["latin"],
@@ -28,7 +29,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${fontSans.variable} ${fontSerif.variable} antialiased dark`}>
-        <Provider>{children}</Provider>
+        <div className="flex">
+          <FeedSidebar />
+          <Provider>{children}</Provider>
+        </div>
         <Toaster />
       </body>
     </html>

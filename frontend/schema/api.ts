@@ -44,4 +44,26 @@ type PostCommentsType = {
     commentId: number | null;
     authorId: number;
 }
-export type {FeedType, PostCommentsType}
+
+type CommentType = {
+    author: {
+        name: string;
+        username: string;
+        profile: {
+            profileImage: string;
+        } | null;
+    };
+    _count: {
+        comments: number;
+    };
+} & {
+    text: string | null;
+    media: string[];
+    postId: number | null;
+    commentId: number | null;
+    id: number;
+    createdAt: Date;
+    updatedAt: Date;
+    authorId: number;
+}
+export type {FeedType, PostCommentsType, CommentType}

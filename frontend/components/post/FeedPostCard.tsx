@@ -23,7 +23,7 @@ const FeedPostCard = ({postProps}: {postProps:FeedType}) => {
     }
 
     function openPost() {
-        router.push(`/${postProps.author.username}/status/${postProps.id}`)
+        router.push(`/${postProps.author.username}/post/${postProps.id}`)
     }
     return (
         <div className="flex flex-col gap-2 border-t border-b py-2 border-t-neutral-800 ">

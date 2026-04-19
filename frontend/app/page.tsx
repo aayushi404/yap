@@ -2,6 +2,7 @@
 import Feed from "@/components/Feed";
 import PostCard from "@/components/post/FeedPostCard";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import FeedSidebar from "@/components/sidebar/FeedSidebar";
 import { Spinner } from "@/components/ui/spinner";
 import { useAuthStore } from "@/hooks/auth";
 import useFeed from "@/hooks/feed";
@@ -28,7 +29,7 @@ export default function Home() {
     return null
   }
   return (
-    <div>
+    <div className="flex">
         <Feed />
     </div>
   );

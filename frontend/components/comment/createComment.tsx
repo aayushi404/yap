@@ -1,4 +1,4 @@
-import { useCreateComment } from "@/hooks/useComment"
+import { useCreateComment, useCreateReplies } from "@/hooks/useComment"
 import { useState, useEffect} from "react"
 import { useForm } from "react-hook-form"
 import { createCommentInput, createCommentSchema, createPostSchema, CreatePostInput} from "@/schema/validator"
@@ -19,9 +19,10 @@ import { uploadFiles } from "@/lib/api/upload"
 import { MediaPost } from "../mediaPost"
 import { file } from "zod"
 
-export const CreateCommentCard = ({commentType, id, postId}: {commentType: "postComment" | "replyComment", id: number, postId:number}) => {
-    const {createComment, isPending} = useCreateComment()
-    const [diablePost, setDisablePost] = useState(true)
+export const CreateCommentCard = ({commentType, id}: {commentType: "postComment" | "replyComment", id: number}) => {
+    const {createComment, isPending: isCommentPending} = useCreateComment()
+    const {createReply, isPending: isReplyPending} = useCreateReplies()
+    const [disablePost, setDisablePost] = useState(true)
     const [files, setFiles] = useState<File[]>([])
 
     const form = useForm<CreatePostInput>({
@@ -57,16 +58,16 @@ export const CreateCommentCard = ({commentType, id, postId}: {commentType: "post
                     media:mediaUrl,
                     postId: id
                 },
-                postId
+                postId: id
             })
         }else {
-            createComment({
+            createReply({
                 comment: {
                     text: data.text,
                     media: mediaUrl,
                     commentId: id
                 },
-                postId
+                commentId: id
             })
         }
         setFiles([])
@@ -126,12 +127,12 @@ export const CreateCommentCard = ({commentType, id, postId}: {commentType: "post
             />
         
             <Button 
-            type="submit" form="form-post" disabled={diablePost || isPending}
+            type="submit" form="form-post" disabled={disablePost || isCommentPending || isReplyPending}
             className="rounded-2xl hover:cursor-pointer my-2 w-15"
             size={"lg"}
             >
-            {isPending && (<Spinner data-icon="inline-start" />)}
-            {isPending ? "Uploading...." : "Post"}
+            {(isCommentPending || isReplyPending) && (<Spinner data-icon="inline-start" />)}
+            {(isCommentPending || isReplyPending) ? "Uploading...." : "Post"}
             
             </Button>
             </div>
