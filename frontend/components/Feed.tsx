@@ -4,21 +4,39 @@ import { CreatePost } from "./post/CreatePost"
 import { Spinner } from "./ui/spinner"
 
 const Feed = () => {
-  const {isPending, error, data} = useFeed()
+  const { isPending, error, data } = useFeed();
   
-    return (
-    
-    <div className="mx-auto sm:w-175 border border-neutral-700">
-        <CreatePost />
-        {isPending && (<Spinner className="size-8" />)}
-        <div className="">
+  return (
+    <div className="w-full">
+        
+        <div className="flex w-full gap-4 border-b border-neutral-800 p-4 px-4 pb-2 pt-4">
+          <div className="size-10 shrink-0 rounded-full bg-neutral-700"></div>
+            <CreatePost />
+        </div>
+        
+        {/* Loading Spinner */}
+        {isPending && (
+          <div className="flex justify-center p-4">
+            <Spinner className="size-8" />
+          </div>
+        )}
+
+        {/* Error Handling */}
+        {error && (
+          <div className="p-4 text-center text-red-500">
+            Failed to load feed.
+          </div>
+        )}
+        
+        {/* The Posts Map */}
+        <div className="flex flex-col">
             {data && data.map((post) => (
-                <FeedPostCard postProps={post} key={post.id}/>
+                <FeedPostCard postProps={post} key={post.id} />
             ))}
         </div>
-    </div>
 
-    )
+    </div>
+  )
 }
 
 export default Feed

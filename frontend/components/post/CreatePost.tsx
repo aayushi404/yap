@@ -76,7 +76,7 @@ export function CreatePost() {
   }
 
   return (
-    <div className="sm:w-150 mx-auto mt-1">
+    <div className="flex-1 w-full sm:max-w-125">
         <form id="form-post" onSubmit={form.handleSubmit(onSubmit)} >
             <Controller
               name="text"
@@ -89,7 +89,7 @@ export function CreatePost() {
                     id="form-text"
                     aria-invalid={fieldState.invalid}
                     placeholder="What's Happening?"
-                    className="border-none text-2xl min-h-20"
+                    className="w-full mt-2 text-wrap text-xl placeholder-neutral-500 outline-none border-none focus:outline-none focus-visible:ring-0"
                   />
                 
                   {fieldState.invalid && (
@@ -129,7 +129,7 @@ export function CreatePost() {
         
           <Button 
           type="submit" form="form-post" disabled={diablePost || isPending}
-          className="rounded-2xl hover:cursor-pointer my-2 w-15"
+          className="hover:cursor-pointer my-2 rounded-full px-4 py-1.5 font-bold"
           size={"lg"}
           >
             {isPending && (<Spinner data-icon="inline-start" />)}
