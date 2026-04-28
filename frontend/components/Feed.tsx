@@ -7,9 +7,8 @@ const Feed = () => {
   const { isPending, error, data } = useFeed();
   
   return (
-    <div className="w-full">
-        
-        <div className="flex w-full gap-4 border-b border-neutral-800 p-4 px-4 pb-2 pt-4">
+    <>      
+        <div className="flex w-full gap-4 border-b border-neutral-800 py-4 pb-2 pt-4">
           <div className="size-10 shrink-0 rounded-full bg-neutral-700"></div>
             <CreatePost />
         </div>
@@ -35,7 +34,7 @@ const Feed = () => {
             ))}
         </div>
 
-    </div>
+    </>
   )
 }
 

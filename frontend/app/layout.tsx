@@ -29,14 +29,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${fontSans.variable} ${fontSerif.variable} antialiased dark`}>
-            
-        <div className="flex justify-center">
-              <FeedSidebar />
+        <Provider>
+          <div className="flex justify-center">
+                <FeedSidebar />
 
-            <main className="flex min-h-screen w-full flex-col border-x border-neutral-800 sm:max-w-150">
-              <Provider>{children}</Provider>
-            </main>
-        </div>
+              <main className="flex min-h-screen w-full flex-col border-x border-neutral-800 sm:max-w-150 px-4 sm:px-6">
+                {children}
+              </main>
+          </div>
+        </Provider>
         <Toaster />
       </body>
     </html>

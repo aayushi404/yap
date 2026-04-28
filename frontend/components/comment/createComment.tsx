@@ -75,8 +75,8 @@ export const CreateCommentCard = ({commentType, id}: {commentType: "postComment"
     }
 
     return (
-    <div className="sm:w-150 mx-auto mt-1">
-        <form id="form-post" onSubmit={form.handleSubmit(onSubmit)} >
+    <div className="">
+        <form id="form-post" onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
             <Controller
                 name="text"
                 control={form.control}
@@ -87,8 +87,8 @@ export const CreateCommentCard = ({commentType, id}: {commentType: "postComment"
                     {...field}
                     id="form-text"
                     aria-invalid={fieldState.invalid}
-                    placeholder="What's Happening?"
-                    className="border-none text-2xl min-h-20"
+                    placeholder="Post your Reply"
+                    className="placeholder-neutral-500 rounded-2xl outline-none border-none focus:outline-none focus-visible:ring-0 text-2xl"
                     />
                 
                     {fieldState.invalid && (

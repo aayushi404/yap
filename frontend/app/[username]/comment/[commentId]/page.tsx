@@ -14,7 +14,7 @@ export default function Page({
     const {isPending: isCommentPending, error: commentError, data: comment} = useComment(Number(commentId))
 
     return (
-        <div className="mx-auto sm:w-175 border-x border-neutral-700 mt-2">
+        <div className="">
             {comment && <CommentCard commentCardProps={comment}/>}
             <CreateCommentCard commentType="replyComment" id={Number(commentId)}/>
             <Comments commentType="replies" id={Number(commentId)}/>

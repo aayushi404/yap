@@ -89,7 +89,7 @@ export function CreatePost() {
                     id="form-text"
                     aria-invalid={fieldState.invalid}
                     placeholder="What's Happening?"
-                    className="w-full mt-2 text-wrap text-xl placeholder-neutral-500 outline-none border-none focus:outline-none focus-visible:ring-0"
+                    className="w-full mt-2 text-wrap text-xl rounded-2xl placeholder-neutral-500 outline-none border-none focus:outline-none focus-visible:ring-0"
                   />
                 
                   {fieldState.invalid && (

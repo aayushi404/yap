@@ -23,17 +23,21 @@ const PostCard = ({postProps}: {postProps:FeedType}) => {
 
     return (
         <div className="flex flex-col gap-2 border-t border-b py-2 border-t-neutral-800 ">
-            <div  className="flex flex-col gap-2 py-2 mx-auto sm:w-150">
-                <div className="flex">
-                    <div>{postProps.author.profileImage && (
-                        <Image 
-                        src={postProps.author.profileImage}
-                        alt=""
-                        width={30}
-                        height={30}
+            <div  className="flex flex-col gap-3 py-2 ">
+                <div className="flex gap-2 items-start">
+                    <Link href="/" className="flex w-fit cursor-pointer items-center justify-center rounded-full p-3 hover:bg-neutral-900 bg-neutral-800 transition-colors">
+                        <div className="size-4 sm:size-5 rounded-full ">
+                        {postProps.author.profileImage && (
+                            <Image
+                            src={postProps.author.profileImage}
+                            alt="appLogo"
+                            height={28}
+                            width={28}
                         />
                         )}
-                    </div>
+                        </div>
+                    </Link>
+          
                     <div className="flex gap-2 items-end">
                         <div><Link href={`/${postProps.author.username}`} className="hover:underline text-xl font-stretch-80%" onClick={e => e.stopPropagation()}>{postProps.author.name}</Link></div>
                         <div><Link href={`/${postProps.author.username}`} onClick={e => e.stopPropagation()}>{postProps.author.username}</Link></div>
@@ -41,14 +45,18 @@ const PostCard = ({postProps}: {postProps:FeedType}) => {
                     </div>
                 </div>
 
-                <div className="">{postProps.text}</div>
 
+
+                <div className="sm:ml-2 ml-1">{postProps.text}</div>
+                
+                <div className="sm:ml-2 ml-1">
                 {postProps.media.length !== 0 && 
                 (<MediaPost media={postProps.media}/>)}
+                </div>
             
-                <div>{getFullTime(new Date(postProps.createdAt))}</div>
+                <div className="sm:ml-2 ml-1 text-neutral-500">{getFullTime(new Date(postProps.createdAt))}</div>
             </div>
-            <div className="border-t border-b py-2 mx-auto sm:w-150 px-4">
+            <div className="border-t border-b py-2 px-4">
             <div className="">
                 <button className={`flex gap-1 items-center cursor-pointer hover:text-pink-600 ${liked && "text-pink-600"}`} onClick={likeClickHandler}>
                     <HeartIcon size={26} />

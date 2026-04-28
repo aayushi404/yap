@@ -1,7 +1,7 @@
 import Image from "next/image"
 export const MediaPost = ({media}: {media:string[]}) => {
     return (
-        <div className="sm:w-150 aspect-video grid gap-1 overflow-hidden rounded-xl mx-auto border border-neutral-500">
+        <div className="aspect-video grid gap-1 overflow-hidden rounded-xl mx-auto border border-neutral-500 w-full">
                     {media.length === 1 && (
                         <div className="relative w-full h-full">
                             <Image
