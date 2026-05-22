@@ -5,6 +5,7 @@ import { AppError } from "../utils/appError.js";
 import { StatusCodes } from "http-status-codes";
 import prisma from "../utils/prismaCient.js";
 import { createsPost, getPostById } from "../services/database.post.js";
+import type { PostType } from "../schema/apiTypes.js";
 
 const createPost = async (req: AuthRequest, res: Response) => {
     const reqBody : createPostInput = req.body
@@ -156,20 +157,7 @@ const getPost = async (req: AuthRequest, res: Response) => {
             }
         }
     })
-    type PostType = {
-        likes: number,
-        isLikedByMe: boolean,
-        author : {
-            name: string,
-            username: string,
-            profileImage: string | null
-        },
-        id: number,
-        createdAt : Date,
-        text: string | null,
-        media: string[],
-        authorId: number
-    }
+    
     if (!post) {
         throw new AppError("Invalid post id", StatusCodes.BAD_REQUEST)
     }

@@ -127,9 +127,6 @@ export default function LoginForm() {
       </CardContent>
       <CardFooter>
         <Field>
-          <Button type="button" variant="outline" onClick={() => form.reset()}>
-            Reset
-          </Button>
           <Button type="submit" form="login-form">
             Submit
           </Button>

@@ -21,4 +21,16 @@ const createFollowRequest = async (req: AuthRequest, res: Response) => {
     return res.status(StatusCodes.CREATED).json({follow})
 }
 
-export {createFollowRequest}
+const createUnfollowRequest = async (req: AuthRequest, res: Response) => {
+    const reqBody : createFollowInput = req.body
+    await prisma.follow.delete({
+        where: {
+            followerId_followingId: {
+                followerId: req.user?.id!,
+                followingId: reqBody.followingId
+            }
+        }
+    })
+    return res.status(StatusCodes.OK).json({message: "successfully unfollowed"})
+}
+export {createFollowRequest, createUnfollowRequest}

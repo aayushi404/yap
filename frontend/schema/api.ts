@@ -66,4 +66,28 @@ type CommentType = {
     updatedAt: Date;
     authorId: number;
 }
-export type {FeedType, PostCommentsType, CommentType}
+
+type userProfile = {
+    name: string,
+    username: string,
+    id: number,
+    createdAt: Date,
+    followersCount: number,
+    followingCount: number,
+    postCount: number,
+    bio: string | null,
+    profileImage: string | null,
+    isFollowing: boolean,
+    isFollower: boolean
+}
+
+type userFollow = {
+    id: number;
+    name: string;
+    username: string;
+    profileImage: string | undefined;
+    bio: string | null | undefined;
+    isFollower: boolean;
+    isFollowing: boolean;
+}
+export type {FeedType, PostCommentsType, CommentType, userProfile, userFollow}

@@ -30,7 +30,7 @@ const FeedPostCard = ({postProps}: {postProps:FeedType}) => {
             <div onClick={openPost} className="hover:cursor-pointer flex flex-col gap-2 py-2">
                 <div className="flex gap-2 items-start">
                     <Link href="/" className="flex w-fit cursor-pointer items-center justify-center rounded-full p-3 hover:bg-neutral-900 bg-neutral-800 transition-colors">
-                        <div className="size-3 sm:size-4<tab>    rounded-full ">
+                        <div className="size-3 sm:size-4 rounded-full ">
                         {postProps.author.profileImage && (
                             <Image
                             src={postProps.author.profileImage}

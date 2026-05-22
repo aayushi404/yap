@@ -5,9 +5,9 @@ import { fetchProfile, getUserFeed, getUserFollower, getUserFollowing, getUserPo
 
 const userRouter : express.Router = express.Router()
 
-userRouter.get("/:userId/posts", asyncHandler(getUserPost))
-userRouter.get("/:userId/followers", asyncHandler(getUserFollower))
-userRouter.get("/:userId/following", asyncHandler(getUserFollowing))
+userRouter.get("/:username/posts",authenticationMiddleware,asyncHandler(getUserPost))
+userRouter.get("/:username/followers", authenticationMiddleware,asyncHandler(getUserFollower))
+userRouter.get("/:username/following", authenticationMiddleware,asyncHandler(getUserFollowing))
 userRouter.get("/feed", authenticationMiddleware, asyncHandler(getUserFeed))
 userRouter.get("/profile", authenticationMiddleware, asyncHandler(fetchProfile))
 

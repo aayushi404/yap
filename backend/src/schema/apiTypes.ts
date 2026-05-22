@@ -12,4 +12,20 @@ type userType = {
     username: string;
 }
 
-export type {userType}
+type PostType = {
+        likes: number,
+        isLikedByMe: boolean,
+        author : {
+            name: string,
+            username: string,
+            profileImage: string | null
+        },
+        id: number,
+        createdAt : Date,
+        text: string | null,
+        media: string[],
+        authorId: number
+    }
+
+
+export type {userType, PostType}

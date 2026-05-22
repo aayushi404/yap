@@ -17,7 +17,7 @@ export default function Home() {
   const router = useRouter()
   useEffect(() => {
     if (_hasHydrated && !user) {
-      router.push("/login")
+      router.push("/auth/login")
     }
     
   }, [user, router, _hasHydrated])
