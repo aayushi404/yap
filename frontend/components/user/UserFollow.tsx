@@ -31,7 +31,7 @@ const UserFollow = ({user, parentUsername}:
                     </div>
                 </Link>
                 <div>
-                    <div><Link href={`/${user.username}`} className="hover:underline text-xl font-stretch-80%" onClick={e => e.stopPropagation()}>{user.username}</Link></div>
+                    <div><Link href={`/${user.username}`} className="hover:underline text-xl font-stretch-80%" onClick={e => e.stopPropagation()}>{user.name}</Link></div>
                     <div>
                         <Link href={`/${user.username}`} onClick={e => e.stopPropagation()}>{user.username}</Link>
                         {user.isFollowing ? (
@@ -41,19 +41,18 @@ const UserFollow = ({user, parentUsername}:
                     </div>
 
                 </div>
-                {user.isFollowing ? (
-                    <div>Follows you</div>
-                ): null}
             </div>
-            <div>{user.isFollower ? (
-                <UnFollowButton onClick={() => unfollow(user.id, username, parentUsername)}/>
-            ): user.isFollowing ? (
-                <Button onClick={() => follow(user.id, username, parentUsername)}>
-                    Follow back
-                </Button>
-            ):(
-                <Button onClick={() => unfollow(user.id, username, parentUsername)}>Follow</Button>
-            )}</div>
+            {user.username !== username ? (
+                <div>{user.isFollower ? (
+                    <UnFollowButton onClick={() => unfollow(user.id, username, parentUsername)}/>
+                ): user.isFollowing ? (
+                    <Button onClick={() => follow(user.id, username, parentUsername)}>
+                        Follow back
+                    </Button>
+                ):(
+                    <Button onClick={() => follow(user.id, username, parentUsername)}>Follow</Button>
+                )}</div>
+            ): null}
         </div>
     )
 }

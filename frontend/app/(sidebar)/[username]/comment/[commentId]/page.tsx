@@ -2,7 +2,9 @@
 import CommentCard from "@/components/comment/CommentCard";
 import Comments from "@/components/comment/comments";
 import { CreateCommentCard } from "@/components/comment/createComment";
+import Header from "@/components/sidebars/header";
 import { useComment, useReplies } from "@/hooks/useComment";
+import { useRouter } from "next/navigation";
 import { use } from "react";
 
 export default function Page({
@@ -12,12 +14,14 @@ export default function Page({
 }) {
     const {commentId} = use(params)
     const {isPending: isCommentPending, error: commentError, data: comment} = useComment(Number(commentId))
+    const router = useRouter()
 
     return (
-        <div className="">
+        <>
+            <Header onClickHandler={() => router.back()} header="Post" subHeader=""/>
             {comment && <CommentCard commentCardProps={comment}/>}
             <CreateCommentCard commentType="replyComment" id={Number(commentId)}/>
             <Comments commentType="replies" id={Number(commentId)}/>
-        </div>
+        </>
     )
 }

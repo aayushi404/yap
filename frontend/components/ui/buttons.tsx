@@ -1,6 +1,7 @@
 "use client"
 import React, { useState } from "react"
 import { Button } from "./button"
+import { ArrowLeftIcon } from "@phosphor-icons/react"
 
 const UnFollowButton = (
     {onClick}:
@@ -29,4 +30,20 @@ const UnFollowButton = (
     )
 }
 
-export {UnFollowButton}
+const BackButton = (
+    {onClickHandler}:
+    {
+        onClickHandler: () => void
+    }
+) => {
+    return (
+        <Button 
+        className="h-10 w-10 rounded-4xl bg-neutral-950 text-neutral-200 hover:bg-neutral-700"
+        onClick={onClickHandler}
+        >
+            <ArrowLeftIcon size={32} />
+        </Button>
+    )
+}
+
+export {UnFollowButton, BackButton}

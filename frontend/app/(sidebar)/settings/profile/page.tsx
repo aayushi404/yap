@@ -1,6 +1,8 @@
 const Profile = () => {
     return (
-        <div>Profile route</div>
+        <>
+        
+        </>
     )
 }
 

@@ -3,6 +3,9 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Controller, useForm } from "react-hook-form"
 import { toast } from "sonner"
+import AppLogo from "@/public/app.svg"
+import Image from "next/image"
+import Link from "next/link"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -69,70 +72,81 @@ export default function LoginForm() {
   }
 
   return (
-    <div className="flex m-auto justify-center items-center h-screen border">
-    <Card className="w-full sm:max-w-md text-xl">
-      <CardHeader>
-        <CardTitle>Welcome back</CardTitle>
-        <CardDescription>
-          Enter your credentials to access your account
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form id="login-form" onSubmit={form.handleSubmit(onSubmit)}>
-          <FieldGroup>
-            <Controller
-              name="username"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="form-rhf-username">
-                    Username
-                  </FieldLabel>
-                  <Input
-                    {...field}
-                    id="form-rhf-username"
-                    aria-invalid={fieldState.invalid}
-                    placeholder="Enter your username"
-                    autoComplete="off"
-                  />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-            <Controller
-              name="password"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="form-rhf-password">
-                    Password
-                  </FieldLabel>
-                  <Input
-                    {...field}
-                    id="form-rhf-password"
-                    aria-invalid={fieldState.invalid}
-                    placeholder="Enter your password"
-                    autoComplete="off"
-                  />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-          </FieldGroup>
-        </form>
-      </CardContent>
-      <CardFooter>
-        <Field>
-          <Button type="submit" form="login-form">
-            Submit
-          </Button>
-        </Field>
-      </CardFooter>
-    </Card>
+    <div className="min-h-screen flex items-center justify-center px-4 bg-neutral-950">
+      <div className="flex w-full max-w-6xl items-center justify-center lg:justify-between gap-10">
+      <div className="hidden lg:flex flex-1 justify-center">
+        <Image src={AppLogo} alt="applogo" height={800} width={800}/>
+      </div>
+      
+      <Card className="w-full max-w-md bg-neutral-900 border border-neutral-800 shadow-2xl">
+        <CardHeader className="space-y-2">
+          <CardTitle className="text-3xl sm:text-4xl font-bold">Let's Yap</CardTitle>
+          <CardDescription className="text-sm sm:text-base text-neutral-400">
+            Enter your credentials to access your account
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form id="login-form" onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+            <FieldGroup>
+              <Controller
+                name="username"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="form-rhf-username" className="text-sm text-neutral-300">
+                      Username
+                    </FieldLabel>
+                    <Input
+                      {...field}
+                      id="form-rhf-username"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="Enter your username"
+                      autoComplete="off"
+                      className="h-10 bg-neutral-800 border-neutral-700 focus:ring-2 focus:ring-white/20"
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]}/>
+                    )}
+                  </Field>
+                )}
+              />
+              <Controller
+                name="password"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel htmlFor="form-rhf-password" className="text-sm text-neutral-300">
+                      Password
+                    </FieldLabel>
+                    <Input
+                      {...field}
+                      id="form-rhf-password"
+                      aria-invalid={fieldState.invalid}
+                      placeholder="Enter your password"
+                      autoComplete="off"
+                      className="h-10 bg-neutral-800 border-neutral-700 focus:ring-2 focus:ring-white/20"
+                    />
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+            </FieldGroup>
+          </form>
+        </CardContent>
+        <CardFooter>
+          <Field className="">
+            <Button type="submit" form="login-form" className="w-full h-10 text-sm font-medium">
+              Submit
+            </Button>
+          <div className="text-sm sm:text-base text-neutral-400">
+            New on our platform? <Link href={"/auth/signup"} className="hover:underline text-neutral-300">Create an account</Link>
+          </div>
+          </Field>
+        </CardFooter>
+      </Card>
+      </div>
     </div>
   )
 }

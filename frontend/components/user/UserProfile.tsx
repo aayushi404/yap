@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { useProfile } from "@/hooks/useProfile"
 import { Spinner } from "../ui/spinner"
 import Image from "next/image"
@@ -6,6 +7,8 @@ import { useAuthStore } from "@/hooks/auth"
 import { Button } from "../ui/button"
 import { UnFollowButton } from "../ui/buttons"
 import { useFollow } from "@/hooks/useFolow"
+import Header from "../sidebars/header"
+import { useRouter } from "next/navigation"
 
 const UserProfile = ({username}:
     {
@@ -15,15 +18,13 @@ const UserProfile = ({username}:
     const {isPending, error, data} = useProfile(username)
     const user = useAuthStore(state => state.user)
     const {follow, unfollow} = useFollow()
+    const router = useRouter()
 
     return (
        <>
        {data && (
         <div className="py-4 border-b">
-            <div className="bg-transparent sticky border-b mb-3">
-                <div>{data.name}</div>
-                <div>{data.postCount}</div>
-            </div>
+            <Header onClickHandler={() => router.back()} header={data.name} subHeader={data.username}/>
             <div className="relative">
                 <div className="h-60 bg-neutral-600 rounded-2xl"></div>
                 <div className="absolute -bottom-1/4 left-5">
@@ -64,9 +65,10 @@ const UserProfile = ({username}:
                 </div>
                 <div>{data.bio}</div>
                 <div>{createTime(new Date(data.createdAt))}</div>
+                
                 <div className="flex gap-5">
-                    <div>{data.followingCount} <span>Following</span></div>
-                    <div>{data.followersCount} <span>Followers</span></div>
+                    <Link href={`/${username}/following`}>{data.followingCount} <span>Following</span></Link>
+                    <Link href={`/${username}/followers`}>{data.followersCount} <span>Followers</span></Link>
                 </div>
             </div>
        </div>

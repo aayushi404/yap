@@ -76,7 +76,7 @@ const getUserPost = async (req: AuthRequest, res: Response) => {
    
 }
 
-const getUserFollower = async (req: Request, res: Response) => {
+const getUserFollower = async (req: AuthRequest, res: Response) => {
     const username = req.params.username as string
     const user = await findUserByUsername(username)
     if (!user) {
@@ -100,12 +100,12 @@ const getUserFollower = async (req: Request, res: Response) => {
                     },
                     followers: {
                     select: {
-                        followerId:true
+                        followingId:true
                     }
                     },
                     following: {
                         select: {
-                            followingId: true
+                            followerId: true
                         }
                     }
                 }
@@ -119,8 +119,8 @@ const getUserFollower = async (req: Request, res: Response) => {
             username: f.username,
             profileImage: f.profile?.profileImage,
             bio: f.profile?.bio,
-            isFollower: f.followers.filter(f => f.followerId === user.id).length > 0,
-            isFollowing: f.following.filter(f => f.followingId === user.id).length > 0
+            isFollower: f.following.filter(f => f.followerId === req.user?.id).length > 0,
+            isFollowing: f.followers.filter(f => f.followingId === req.user?.id).length > 0
         }
     })
 
@@ -128,7 +128,7 @@ const getUserFollower = async (req: Request, res: Response) => {
     return res.status(StatusCodes.OK).json(result)
 }
 
-const getUserFollowing = async (req: Request, res: Response) => {
+const getUserFollowing = async (req: AuthRequest, res: Response) => {
     const username = req.params.username as string
     const user = await findUserByUsername(username)
     if (!user) {
@@ -151,13 +151,13 @@ const getUserFollowing = async (req: Request, res: Response) => {
                         }
                     },
                     followers: {
-                    select: {
-                        followerId:true
-                    }
+                        select: {
+                            followingId:true
+                        }
                     },
                     following: {
                         select: {
-                            followingId: true
+                            followerId: true
                         }
                     },
                 }
@@ -173,8 +173,8 @@ const getUserFollowing = async (req: Request, res: Response) => {
             username: f.username,
             profileImage: f.profile?.profileImage,
             bio: f.profile?.bio,
-            isFollower: f.followers.filter(f => f.followerId === user.id).length > 0,
-            isFollowing: f.following.filter(f => f.followingId === user.id).length > 0
+            isFollower: f.following.filter(f => f.followerId === req.user?.id).length > 0,
+            isFollowing: f.followers.filter(f => f.followingId === req.user?.id).length > 0
         }
     })
 
@@ -271,10 +271,10 @@ type userProfile = {
         profileImage: string;
     } | null;
     followers: {
-        followerId: number;
+        followingId: number;
     }[];
     following: {
-        followingId: number;
+        followerId: number;
     }[];
 } | null
 
@@ -318,12 +318,12 @@ const fetchProfile = async (req: AuthRequest, res: Response) => {
                 },
                 followers: {
                     select: {
-                        followerId:true
+                        followingId:true
                     }
                 },
                 following: {
                     select: {
-                        followingId: true
+                        followerId: true
                     }
                 },
                 name: true,
@@ -353,12 +353,12 @@ const fetchProfile = async (req: AuthRequest, res: Response) => {
                 },
                 followers: {
                     select: {
-                        followerId: true
+                        followingId: true
                     }
                 },
                 following: {
                     select: {
-                        followingId: true
+                        followerId: true
                     }
                 },
                 name: true,
@@ -371,19 +371,19 @@ const fetchProfile = async (req: AuthRequest, res: Response) => {
     if (!user) {
         new AppError("profile not found", StatusCodes.NOT_FOUND)
     }
-
+    console.log(user)
     const result: userProfileType | null = user && {
             name: user.name,
             username: user.username,
             createdAt: user.createdAt,
             id: user.id,
-            followersCount: user._count.followers,
-            followingCount: user._count.following,
+            followersCount: user._count.following,
+            followingCount: user._count.followers,
             postCount: user._count.posts,
             bio: user.profile && user.profile.bio,
             profileImage: user.profile && user.profile.profileImage,
-            isFollowing: user.following.filter(f => f.followingId === req.user?.id).length > 0,
-            isFollower: user.followers.filter(f => f.followerId === req.user?.id).length > 0
+            isFollowing: user.followers.filter(f => f.followingId === req.user?.id).length > 0,
+            isFollower: user.following.filter(f => f.followerId === req.user?.id).length > 0
         }
     
     return res.status(StatusCodes.OK).json(result)
