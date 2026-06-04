@@ -1,16 +1,17 @@
 "use client"
 import { useAuthStore } from "@/hooks/auth";
-import { HouseIcon, UserIcon, ChatCircleIcon, MagnifyingGlassIcon } from "@phosphor-icons/react";
-import { FileSearchIcon } from "@phosphor-icons/react/dist/ssr";
+import { HouseIcon, UserIcon, ChatCircleIcon, MagnifyingGlassIcon, DotsThreeVerticalIcon } from "@phosphor-icons/react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "../ui/dialog";
 import React from "react";
+import { useRouter } from "next/navigation";
 
 export default function FeedSidebar() {
   const user = useAuthStore(state => state.user)
   const pathname = usePathname()
-  console.log(pathname)
+  const router = useRouter()
   if (!user) {
     return
   }
@@ -60,24 +61,35 @@ export default function FeedSidebar() {
               <UserIcon size={32} color="#e8e8e8" />
           </NavItem>
         </div>
-        
-        <Link href={`/${user.username}`} className="mb-4 flex w-fit xl:w-full cursor-pointer items-center justify-center gap-3 rounded-full p-2 hover:bg-neutral-900 transition-colors">
-          <div className="size-10 shrink-0 rounded-full bg-neutral-700">
-            {user.profileImage ? (
-              <Image 
-              src={user.profileImage}
-              alt={user.name}
-              width={40}
-              height={40}
-              />
-            ): null
-            }
-          </div>
-          <div className="hidden xl:block">
-            <p className="font-bold leading-tight">{user.name}</p>
-            <p className="text-neutral-500 text-sm">{`@${user.username}`}</p>
-          </div>
-        </Link>
+        <Dialog>
+          <DialogTrigger>
+            <div className="mb-4 flex w-fit xl:w-full cursor-pointer items-center justify-center gap-3 rounded-full p-2 hover:bg-neutral-900 transition-colors"
+              
+            
+            >
+              <div className="size-10 shrink-0 rounded-full bg-neutral-700">
+                {user.profileImage ? (
+                  <Image 
+                  src={user.profileImage}
+                  alt={user.name}
+                  width={40}
+                  height={40}
+                  />
+                ): null
+                }
+              </div>
+              <div className="hidden xl:block">
+                <p className="font-bold leading-tight">{user.name}</p>
+                <p className="text-neutral-500 text-sm">{`@${user.username}`}</p>
+              </div>
+              <DotsThreeVerticalIcon size={28} className="z-1000" />
+            </div>
+          </DialogTrigger>
+          <DialogContent showCloseButton={false} className="sm:left-1/3 sm:top-5/6 sm:w-70">
+            <DialogTitle>{user.username}</DialogTitle>
+                <div onClick={() => router.push("/auth/logout")} className="hover:cursor-pointer">Log out @{user.username}</div>
+          </DialogContent>
+        </Dialog>
     </header>
   );
 }
