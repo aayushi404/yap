@@ -1,7 +1,7 @@
 import express from "express"
 import authenticationMiddleware from "../middlewares/authentication.js"
 import asyncHandler from "../utils/asyncHandler.js"
-import { fetchProfile, getUserFeed, getUserFollower, getUserFollowing, getUserPost } from "../controllers/user.js"
+import { fetchProfile, getUserFeed, getUserFollower, getUserFollowing, getUserPost, userSearch } from "../controllers/user.js"
 
 const userRouter : express.Router = express.Router()
 
@@ -10,5 +10,6 @@ userRouter.get("/:username/followers", authenticationMiddleware,asyncHandler(get
 userRouter.get("/:username/following", authenticationMiddleware,asyncHandler(getUserFollowing))
 userRouter.get("/feed", authenticationMiddleware, asyncHandler(getUserFeed))
 userRouter.get("/profile", authenticationMiddleware, asyncHandler(fetchProfile))
+userRouter.get("/search", authenticationMiddleware, asyncHandler(userSearch))
 
 export default userRouter

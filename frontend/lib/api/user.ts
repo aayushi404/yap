@@ -1,4 +1,4 @@
-import { userFollow as userFollowType, userProfile as userProfileType } from "@/schema/api"
+import { userFollow as userFollowType, userProfile as userProfileType, userSearch as userSearchType } from "@/schema/api"
 import { api } from "./client"
 import { FeedType } from "@/schema/api"
 
@@ -47,4 +47,12 @@ export const userUnFollow = async (followingId: number) => {
         followingId: followingId
     })
     return response.data
+}
+
+export const userSearch = async (q: string) => {
+    const response = await api.get<{
+        response: userSearchType[]
+    }>(`/user/search?q=${q}`)
+
+    return response.data.response
 }

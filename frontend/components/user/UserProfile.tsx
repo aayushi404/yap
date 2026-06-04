@@ -41,14 +41,16 @@ const UserProfile = ({username}:
                 </div>
                 <div className="absolute right-10 -bottom-10">
                     {data.id === user?.id ? (
-                        <Button className="rounded-2xl text-black font-bold">Edit Profile</Button>
+                        <Button className="rounded-2xl text-black font-bold hover:cursor-pointer" onClick={() => router.push("/settings/profile")}>
+                            Edit Profile
+                        </Button>
                     ): (
                         data.isFollower ? (
                             <UnFollowButton onClick={() => unfollow(data.id, user?.username!, data.username)}/>
                         ): (
                             data.isFollowing ? (
-                            <Button onClick={() => follow(data.id, user?.username!, data.username)}>Follow Back</Button>) :
-                            <Button onClick={() => follow(data.id, user?.username!, data.username)}>Follow</Button>
+                            <Button onClick={() => follow(data.id, user?.username!, data.username)} className="hover:cursor-pointer">Follow Back</Button>) :
+                            <Button onClick={() => follow(data.id, user?.username!, data.username)} className="hover:cursor-pointer">Follow</Button>
                         )
                     )}
                 </div>
@@ -56,19 +58,25 @@ const UserProfile = ({username}:
             <div className="flex-col mt-20">
                 <div>
                     <div>{data.name}</div>
-                    <div>
-                        <span>{data.username}</span>
+                    <div className="flex gap-2">
+                        <span className="text-neutral-400">@{data.username}</span>
                         {data.username !== user?.username && data.isFollowing ? (
-                            <span>Follows you</span>
+                            <span className="bg-neutral-600 rounded-sm px-1.5">Follows you</span>
                         ): null}
                     </div>
                 </div>
-                <div>{data.bio}</div>
-                <div>{createTime(new Date(data.createdAt))}</div>
+                <div className="text-neutral-400">{data.bio}</div>
+                <div className="text-neutral-400">{createTime(new Date(data.createdAt))}</div>
                 
                 <div className="flex gap-5">
-                    <Link href={`/${username}/following`}>{data.followingCount} <span>Following</span></Link>
-                    <Link href={`/${username}/followers`}>{data.followersCount} <span>Followers</span></Link>
+                    <Link href={`/${username}/following`} className="hover:underline flex gap-0.5">
+                        <span>{data.followingCount}</span> 
+                        <span className="text-neutral-400">Following</span>
+                    </Link>
+                    <Link href={`/${username}/followers`} className="hover:underline flex gap-0.5">
+                        <span>{data.followersCount}</span>
+                        <span className="text-neutral-400">Followers</span>
+                    </Link>
                 </div>
             </div>
        </div>

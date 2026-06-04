@@ -1,6 +1,7 @@
 "use client"
 import { useAuthStore } from "@/hooks/auth";
-import { HouseIcon, UserIcon, ChatCircleIcon } from "@phosphor-icons/react";
+import { HouseIcon, UserIcon, ChatCircleIcon, MagnifyingGlassIcon } from "@phosphor-icons/react";
+import { FileSearchIcon } from "@phosphor-icons/react/dist/ssr";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -43,6 +44,13 @@ export default function FeedSidebar() {
             active={pathname === "/"}
           >
             <ChatCircleIcon size={32} color="#e8e8e8"/>
+          </NavItem>
+          <NavItem
+            text="Explore"
+            active={pathname === "/explore"}
+            route="/explore"
+          >
+            <MagnifyingGlassIcon size={28}/>
           </NavItem>
           <NavItem 
             text="Profile" 

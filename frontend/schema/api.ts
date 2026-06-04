@@ -90,4 +90,11 @@ type userFollow = {
     isFollower: boolean;
     isFollowing: boolean;
 }
-export type {FeedType, PostCommentsType, CommentType, userProfile, userFollow}
+
+type userSearch = {
+    id: number,
+    name: string,
+    username: string,
+    profileImage: string | undefined;
+}
+export type {FeedType, PostCommentsType, CommentType, userProfile, userFollow, userSearch}

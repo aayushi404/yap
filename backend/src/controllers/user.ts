@@ -389,4 +389,40 @@ const fetchProfile = async (req: AuthRequest, res: Response) => {
     return res.status(StatusCodes.OK).json(result)
 }
 
-export {getUserFeed, getUserFollower, getUserFollowing, getUserPost, fetchProfile}
+const userSearch = async (req: AuthRequest, res: Response) => {
+    const query = req.query.q as string
+    const user = await prisma.user.findMany({
+        where: {
+            OR: [
+                {
+                    username: { contains: query, mode: "insensitive"}
+                },
+                {
+                    name: { contains: query, mode: "insensitive"}
+                }
+            ]
+        },
+        select: {
+            id: true,
+            name: true,
+            username: true,
+            profile: {
+                select: {
+                    profileImage: true
+                }
+            }
+        }
+    })
+    const response = user.map(u => {
+        return {
+        id: u.id,
+        name: u.name,
+        username: u.username,
+        profileImage: u.profile?.profileImage
+        }
+    })
+
+    return res.status(StatusCodes.OK).json({response})
+}
+
+export {getUserFeed, getUserFollower, getUserFollowing, getUserPost, fetchProfile, userSearch}
