@@ -7,8 +7,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "npx eslint . --ext .ts",
-    "build": "eslint && tsc",
-    "dev": "tsc && node --watch dist/index.js"
+    "build": "tsc -b",
+    "prisma": "npx prisma migrate dev",
+    "dev": "pnpm prisma && tsc && node --watch dist/index.js"
   },
   "keywords": [],
   "author": "",
