@@ -40,7 +40,7 @@ export default function SignupForm() {
 
   async function onSubmit(data: SignupInput) {
   
-    const BACKEND_URL = process.env.BACKEND_URL || "http://localhost:8080"
+    const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8080"
     try {
       await axios.post(`${BACKEND_URL}/auth/signup`, data)
       toast.success("Signup Successfull!!")

@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig } from "axios"
 import { error } from "console"
 
 export const api = axios.create({
-    baseURL: process.env.BACKEND_URL || "http://localhost:8080"
+    baseURL: process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8080"
 })
 export const apiClient = {
   get: <T,>(url: string, config: AxiosRequestConfig<T> | undefined) => api.get(url, config),
