@@ -8,6 +8,8 @@ import { AppError } from "../utils/appError.js";
 import { signJwt } from "../utils/jwt.js";
 import type { userType } from "../schema/apiTypes.js";
 
+const DEFAULT_PROFILE_URL = ""
+
 const signup =  async (req: Request, res: Response) => {
     const req_body:SignupInput = req.body
 
@@ -23,12 +25,19 @@ const signup =  async (req: Request, res: Response) => {
     }
 
     const hashedPassword = await hashPassword(req_body.password)
-    await prisma.user.create({data: {
+    const newUser = await prisma.user.create({data: {
         username: req_body.username,
         email: req_body.email,
         password: hashedPassword,
         name: req_body.email.split("@")[0] || req_body.username
     }})
+    await prisma.profile.create({
+        data: {
+            userId: newUser.id,
+            name: newUser.name,
+            profileImage: DEFAULT_PROFILE_URL
+        }
+    })
     res.status(StatusCodes.CREATED).json({
         message: "User successfully created"
     })

@@ -2,7 +2,7 @@ import { userFollow } from "@/schema/api"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "../ui/button"
-import { useFollow } from "@/hooks/useFolow"
+import { useFollow } from "@/hooks/useFollow"
 import { useAuthStore } from "@/hooks/auth"
 import { UnFollowButton } from "../ui/buttons"
 

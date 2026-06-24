@@ -6,6 +6,7 @@ import prisma from "../utils/prismaCient.js";
 import type { AuthRequest } from "../utils/request.js";
 import type { PostType } from "../schema/apiTypes.js";
 import { includes } from "zod";
+import type { updateProfileInput } from "../schema/validator.js";
 
 const getUserPost = async (req: AuthRequest, res: Response) => {
     const username = req.params.username as string
@@ -292,6 +293,29 @@ type userProfileType = {
     isFollower: boolean
 }
 
+const DEFAULT_PROFILE_URL = ""
+const updateProfie = async (req: AuthRequest, res: Response) => {
+    const userId =  req.query.userId
+
+    const reqBody = req.body as updateProfileInput
+
+    if (userId !== req.user?.id) {
+        throw new AppError("Unauthoried access", StatusCodes.UNAUTHORIZED)
+    }
+
+    if (userId) {
+        await prisma.profile.update({
+            where : {userId: Number(userId)},
+            data: {
+                name: reqBody.name,
+                bio: reqBody.bio,
+                profileImage: (!reqBody.profileImage || reqBody.profileImage === "") ? DEFAULT_PROFILE_URL : reqBody.profileImage
+            }
+        })
+    }
+
+    return res.status(StatusCodes.CREATED).json({message: "Profile successfully updated"})
+}
 const fetchProfile = async (req: AuthRequest, res: Response) => {
     const username = req.query.username
     const userId = Number(req.query.userId)
@@ -389,6 +413,8 @@ const fetchProfile = async (req: AuthRequest, res: Response) => {
     return res.status(StatusCodes.OK).json(result)
 }
 
+
+
 const userSearch = async (req: AuthRequest, res: Response) => {
     const query = req.query.q as string
     const user = await prisma.user.findMany({
@@ -425,4 +451,4 @@ const userSearch = async (req: AuthRequest, res: Response) => {
     return res.status(StatusCodes.OK).json({response})
 }
 
-export {getUserFeed, getUserFollower, getUserFollowing, getUserPost, fetchProfile, userSearch}
+export {getUserFeed, getUserFollower, getUserFollowing, getUserPost, fetchProfile, userSearch, updateProfie}

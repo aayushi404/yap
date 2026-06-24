@@ -43,7 +43,7 @@ export default function LoginForm() {
   })
 
   async function onSubmit(data: LoginInput) {
-    const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8080"
+    const BACKEND_URL =  process.env.NEXT_PUBLIC_NODE_ENV === "development" ? "http://localhost:8080" : process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8080"
     try {
       if (BACKEND_URL) {
         const response = await axios.post(`${BACKEND_URL}/auth/login`, data)

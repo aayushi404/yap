@@ -6,7 +6,7 @@ import { createTime } from "@/lib/services"
 import { useAuthStore } from "@/hooks/auth"
 import { Button } from "../ui/button"
 import { UnFollowButton } from "../ui/buttons"
-import { useFollow } from "@/hooks/useFolow"
+import { useFollow } from "@/hooks/useFollow"
 import Header from "../sidebars/header"
 import { useRouter } from "next/navigation"
 

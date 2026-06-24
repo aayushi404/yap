@@ -33,5 +33,13 @@ const createCommentSchema = z.object({
 const createFollowSchema = z.object({
     followingId: z.number()
 });
-export { loginSchema, signupSchema, createPostSchema, createCommentSchema, createFollowSchema };
+const updateProfile = z.object({
+    name: z.string()
+        .min(1, { message: "name must contain some characters" })
+        .max(120, { message: "Name cannot be that much long" }),
+    bio: z.string()
+        .max(250, { message: "bio cannot be more than 250 characters long" }),
+    profileImage: z.string().optional()
+});
+export { loginSchema, signupSchema, createPostSchema, createCommentSchema, createFollowSchema, updateProfile };
 //# sourceMappingURL=validator.js.map

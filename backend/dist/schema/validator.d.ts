@@ -22,10 +22,16 @@ declare const createCommentSchema: z.ZodObject<{
 declare const createFollowSchema: z.ZodObject<{
     followingId: z.ZodNumber;
 }, z.core.$strip>;
-export { loginSchema, signupSchema, createPostSchema, createCommentSchema, createFollowSchema };
+declare const updateProfile: z.ZodObject<{
+    name: z.ZodString;
+    bio: z.ZodString;
+    profileImage: z.ZodOptional<z.ZodString>;
+}, z.core.$strip>;
+export { loginSchema, signupSchema, createPostSchema, createCommentSchema, createFollowSchema, updateProfile };
 export type LoginInput = z.infer<typeof loginSchema>;
 export type SignupInput = z.infer<typeof signupSchema>;
 export type createPostInput = z.infer<typeof createPostSchema>;
 export type createCommentInput = z.infer<typeof createCommentSchema>;
 export type createFollowInput = z.infer<typeof createFollowSchema>;
+export type updateProfileInput = z.infer<typeof updateProfile>;
 //# sourceMappingURL=validator.d.ts.map

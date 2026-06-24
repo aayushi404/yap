@@ -4,6 +4,7 @@ import { comparePassword, hashPassword } from "../utils/bcrypt.js";
 import { findUserByEmail, findUserByUsername } from "../services/database.user.js";
 import { AppError } from "../utils/appError.js";
 import { signJwt } from "../utils/jwt.js";
+const DEFAULT_PROFILE_URL = "";
 const signup = async (req, res) => {
     const req_body = req.body;
     const u = await findUserByUsername(req_body.username);
@@ -15,12 +16,19 @@ const signup = async (req, res) => {
         throw new AppError("An account already exist with this email", StatusCodes.CONFLICT);
     }
     const hashedPassword = await hashPassword(req_body.password);
-    await prisma.user.create({ data: {
+    const newUser = await prisma.user.create({ data: {
             username: req_body.username,
             email: req_body.email,
             password: hashedPassword,
             name: req_body.email.split("@")[0] || req_body.username
         } });
+    await prisma.profile.create({
+        data: {
+            userId: newUser.id,
+            name: newUser.name,
+            profileImage: DEFAULT_PROFILE_URL
+        }
+    });
     res.status(StatusCodes.CREATED).json({
         message: "User successfully created"
     });

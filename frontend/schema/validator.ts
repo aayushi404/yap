@@ -54,9 +54,18 @@ const createCommentSchema = z.object({
     commentId: z.number().optional()
 })
 
+const updateProfileSchema = z.object({
+    name: z.string()
+    .min(1, {message: "name must contain some characters"})
+    .max(120, {message: "Name cannot be that much long"}),
+    bio: z.string()
+    .max(250, {message: "bio cannot be more than 250 characters long"}),
+    profileImage: z.string().optional()
+})
 
-export {loginSchema, signupSchema, createPostSchema, createCommentSchema}
+export {loginSchema, signupSchema, createPostSchema, createCommentSchema, updateProfileSchema}
 export type LoginInput = z.infer<typeof loginSchema>
 export type SignupInput = z.infer<typeof signupSchema>
 export type CreatePostInput = z.infer<typeof createPostSchema>
 export type createCommentInput = z.infer<typeof createCommentSchema>
+export type updateProfileInput = z.infer<typeof updateProfileSchema>
