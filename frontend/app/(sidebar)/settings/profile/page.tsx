@@ -22,7 +22,7 @@ import { api } from "@/lib/api/client"
 
 const Profile = () => {
     const router = useRouter()
-    const username = useAuthStore(state => state.user?.username)
+    const {username, id} = useAuthStore(state => state.user!)
     const [profile, setProfile] = useState<userProfileType | null>(null)
     const [files, setFiles] = useState<File[]>([])
 
@@ -31,7 +31,7 @@ const Profile = () => {
         defaultValues: {
             name: "",
             bio: "",
-            profileImage: ""
+            profileImage: []
         }
     })
 
@@ -40,7 +40,7 @@ const Profile = () => {
             form.reset({
                 name: profile.name ?? "",
                 bio: profile.bio ?? "",
-                profileImage: profile.profileImage ?? ""
+                profileImage: []
             })
         }
     }, [profile, form])
@@ -65,21 +65,22 @@ const Profile = () => {
     }, [files])
 
     const onSubmit = async (data: updateProfileInput) => {
-        if (file.length > 0) {
+        if (files.length > 0) {
             const mediaUrl = await uploadFiles(files)
         
-            await api.post("/user/profile", {
+            await api.post(`/user/profile?userId=${id}`, {
                 name: data.name,
                 bio: data.bio,
                 profileImage: mediaUrl[0]
             })
-        }
+        }else {
 
-        await api.post("/user/profile", {
-            name: data.name,
-            bio: data.bio,
-            profileImage: data.profileImage
-        })
+            await api.post(`/user/profile?userId=${id}`, {
+                name: data.name,
+                bio: data.bio,
+                profileImage: profile?.profileImage
+            })
+        }
     }
     return (
         <>
@@ -95,8 +96,9 @@ const Profile = () => {
                                 <Image
                                 src={profile.profileImage}
                                 alt="appLogo"
-                                height={28}
-                                width={28}
+                                height={60}
+                                width={60}
+                                className="fit"
                             />
                             )}
                     </div>
@@ -108,7 +110,8 @@ const Profile = () => {
                         control={form.control}
                         render={({field, fieldState}) => (
                         <Field data-invalid={fieldState.invalid} className="w-10 py-2">
-                            <Input 
+                            <Input
+                            
                             id="form-media"
                             type="file"
                             multiple
@@ -136,7 +139,6 @@ const Profile = () => {
                                 <Input
                                     {...field}
                                     id="form-name"
-                                    area-invalid={fieldState.invalid}
                                     autoComplete="off"
                                     className=""
                                     
@@ -157,7 +159,6 @@ const Profile = () => {
                                 <Input 
                                     {...field}
                                     id="form-bio"
-                                    area-invalid={fieldState.invalid}
                                     autoComplete="off"
                                     className=""
                                     

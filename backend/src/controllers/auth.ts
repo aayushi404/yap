@@ -8,7 +8,7 @@ import { AppError } from "../utils/appError.js";
 import { signJwt } from "../utils/jwt.js";
 import type { userType } from "../schema/apiTypes.js";
 
-const DEFAULT_PROFILE_URL = ""
+const DEFAULT_PROFILE_URL = process.env.CLOUDINARY_DEFAULT_PROFILE_URL || ""
 
 const signup =  async (req: Request, res: Response) => {
     const req_body:SignupInput = req.body

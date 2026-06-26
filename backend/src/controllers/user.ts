@@ -293,16 +293,16 @@ type userProfileType = {
     isFollower: boolean
 }
 
-const DEFAULT_PROFILE_URL = ""
-const updateProfie = async (req: AuthRequest, res: Response) => {
+const DEFAULT_PROFILE_URL = process.env.CLOUDINARY_DEFAULT_PROFILE_URL || ""
+const updateProfile = async (req: AuthRequest, res: Response) => {
     const userId =  req.query.userId
 
     const reqBody = req.body as updateProfileInput
 
-    if (userId !== req.user?.id) {
+    if (Number(userId) !== req.user?.id) {
         throw new AppError("Unauthoried access", StatusCodes.UNAUTHORIZED)
     }
-
+    console.log(reqBody)
     if (userId) {
         await prisma.profile.update({
             where : {userId: Number(userId)},
@@ -451,4 +451,4 @@ const userSearch = async (req: AuthRequest, res: Response) => {
     return res.status(StatusCodes.OK).json({response})
 }
 
-export {getUserFeed, getUserFollower, getUserFollowing, getUserPost, fetchProfile, userSearch, updateProfie}
+export {getUserFeed, getUserFollower, getUserFollowing, getUserPost, fetchProfile, userSearch, updateProfile}

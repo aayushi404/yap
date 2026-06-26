@@ -1,9 +1,9 @@
 import express from "express"
 import authenticationMiddleware from "../middlewares/authentication.js"
 import asyncHandler from "../utils/asyncHandler.js"
-import { fetchProfile, getUserFeed, getUserFollower, getUserFollowing, getUserPost, updateProfie, userSearch } from "../controllers/user.js"
+import { fetchProfile, getUserFeed, getUserFollower, getUserFollowing, getUserPost, updateProfile, userSearch } from "../controllers/user.js"
 import zodValidatorMiddlware from "../middlewares/validator.js"
-import { updateProfile } from "../schema/validator.js"
+import { updateProfile as updateProfileType} from "../schema/validator.js"
 
 const userRouter : express.Router = express.Router()
 
@@ -12,7 +12,7 @@ userRouter.get("/:username/followers", authenticationMiddleware,asyncHandler(get
 userRouter.get("/:username/following", authenticationMiddleware,asyncHandler(getUserFollowing))
 userRouter.get("/feed", authenticationMiddleware, asyncHandler(getUserFeed))
 userRouter.get("/profile", authenticationMiddleware, asyncHandler(fetchProfile))
-userRouter.post("profile", authenticationMiddleware, zodValidatorMiddlware(updateProfile), asyncHandler(updateProfie))
+userRouter.post("/profile", authenticationMiddleware, zodValidatorMiddlware(updateProfileType), asyncHandler(updateProfile))
 userRouter.get("/search", authenticationMiddleware, asyncHandler(userSearch))
 
 export default userRouter

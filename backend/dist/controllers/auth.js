@@ -4,7 +4,7 @@ import { comparePassword, hashPassword } from "../utils/bcrypt.js";
 import { findUserByEmail, findUserByUsername } from "../services/database.user.js";
 import { AppError } from "../utils/appError.js";
 import { signJwt } from "../utils/jwt.js";
-const DEFAULT_PROFILE_URL = "";
+const DEFAULT_PROFILE_URL = process.env.CLOUDINARY_DEFAULT_PROFILE_URL || "";
 const signup = async (req, res) => {
     const req_body = req.body;
     const u = await findUserByUsername(req_body.username);

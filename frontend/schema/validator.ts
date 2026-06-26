@@ -60,7 +60,7 @@ const updateProfileSchema = z.object({
     .max(120, {message: "Name cannot be that much long"}),
     bio: z.string()
     .max(250, {message: "bio cannot be more than 250 characters long"}),
-    profileImage: z.string().optional()
+    profileImage: mediaUploadSchema
 })
 
 export {loginSchema, signupSchema, createPostSchema, createCommentSchema, updateProfileSchema}
