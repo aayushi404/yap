@@ -22,7 +22,7 @@ import { api } from "@/lib/api/client"
 
 const Profile = () => {
     const router = useRouter()
-    const {username, id} = useAuthStore(state => state.user!)
+    const {user} = useAuthStore(state => state)
     const [profile, setProfile] = useState<userProfileType | null>(null)
     const [files, setFiles] = useState<File[]>([])
 
@@ -49,9 +49,9 @@ const Profile = () => {
         const fetchProfile = async () => {
             let profile : userProfileType | null = null
             try {
-                profile = queryClient.getQueryData(["userProfile", username]) as userProfileType
+                profile = queryClient.getQueryData(["userProfile", user?.username]) as userProfileType
             } catch (_err) {
-                profile = await userProfile(username!)
+                profile = await userProfile(user?.username!)
             }
             setProfile(profile)
         }
@@ -68,14 +68,14 @@ const Profile = () => {
         if (files.length > 0) {
             const mediaUrl = await uploadFiles(files)
         
-            await api.post(`/user/profile?userId=${id}`, {
+            await api.post(`/user/profile?userId=${user?.id}`, {
                 name: data.name,
                 bio: data.bio,
                 profileImage: mediaUrl[0]
             })
         }else {
 
-            await api.post(`/user/profile?userId=${id}`, {
+            await api.post(`/user/profile?userId=${user?.id}`, {
                 name: data.name,
                 bio: data.bio,
                 profileImage: profile?.profileImage
