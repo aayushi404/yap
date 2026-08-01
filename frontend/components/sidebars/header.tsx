@@ -12,7 +12,7 @@ const Header = (
     }
 ) => {
     return (
-        <div className="sticky top-0 z-10 border-b border-neutral-800 bg-black/80 p-2 backdrop-blur-md">
+        <div className="sticky top-0 z-10 border-b border-neutral-800 bg-black/80 py-2 w-full backdrop-blur-md">
             <div className="flex gap-2 items-center">
                 <BackButton onClickHandler={onClickHandler}/>
                 <div className="flex-col">

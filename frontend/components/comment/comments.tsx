@@ -6,6 +6,7 @@ import { createTime } from "@/lib/services"
 import { MediaPost } from "../mediaPost"
 import { useRouter } from "next/navigation"
 import { ChatCircleIcon } from "@phosphor-icons/react"
+import PostCard from "../PostCard"
 
 const Comments = ({commentType, id} : {commentType: "comments" | "replies",id: number}) => {
     const {isPending, error, data:comments} = useComments({commentType, id})
@@ -17,43 +18,16 @@ const Comments = ({commentType, id} : {commentType: "comments" | "replies",id: n
         <div>
             {comments && comments.map((comment) => (
                 <div className="flex flex-col gap-2 border-t border-b py-2 border-t-neutral-800" key={comment.id}>
-                    <div onClick={() => openComment(comment.author.username, comment.id)} className="hover:cursor-pointer flex flex-col gap-2 py-2">
-                        <div className="flex gap-2 items-start">
-                            <Link href="/" className="flex w-fit cursor-pointer items-center justify-center rounded-full p-3 hover:bg-neutral-900 bg-neutral-800 transition-colors">
-                                <div className="size-3 sm:size-4<tab>    rounded-full ">
-                                {comment.author.profile?.profileImage && (
-                                    <Image
-                                    src={comment.author.profile?.profileImage}
-                                    alt="appLogo"
-                                    height={28}
-                                    width={28}
-                                />
-                                )}
-                                </div>
-                            </Link>
-          
-                            <div className="flex gap-2 items-end">
-                                <div><Link href={`/${comment.author.username}`} className="hover:underline text-xl font-stretch-80%" onClick={e => e.stopPropagation()}>{comment.author.name}</Link></div>
-                                <div><Link href={`/${comment.author.username}`} onClick={e => e.stopPropagation()}>{comment.author.username}</Link></div>
-                                <div>{createTime(new Date(comment.createdAt))}</div>
-                            </div>
-                        </div>
-
-                        <div className="sm:ml-12 ml-10">{comment.text}</div>
-                        <div className="sm:ml-12 ml-10">
-                            {comment.media.length !== 0 && 
-                            (<MediaPost media={comment.media}/>)}
-                        </div>
-
-                    </div>
-                    <div className="border-t border-b py-2 px-4">
-                        <div className="">
-                            <button className={`flex gap-1 items-center cursor-pointer`} onClick={() => openComment(comment.author.username, comment.id)}>
-                                <ChatCircleIcon size={26}/>
-                                <span>{comment._count.comments}</span>
-                            </button>
-                        </div>
-                    </div>
+                   <PostCard postProps={{
+                        username: comment.author.username,
+                        profileImage: comment.author.profile?.profileImage || null,
+                        name: comment.author.name,
+                        text: comment.text,
+                        media: comment.media,
+                        createdAt: new Date(comment.createdAt),
+                        id: comment.id,
+                        onClickHandler: () => openComment(comment.author.username,comment.id)
+                    }}/> 
                 </div>
             ))}
         </div>

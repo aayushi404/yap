@@ -10,7 +10,7 @@ const UserPosts = ({username}:
     const {isPending, error, data} = useUserPost(username)
     return (
         <>
-        <div className="flex flex-col">
+        <div className="flex flex-col px-4">
             {data && data.map((post) => (
                 <FeedPostCard postProps={post} key={post.id} />
             ))}

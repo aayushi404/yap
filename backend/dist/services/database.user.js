@@ -16,7 +16,7 @@ const findUserById = async (userId) => {
 const findUserByUsername = async (username) => {
     return await prisma.user.findFirst({
         where: {
-            username
+            username: username
         },
         include: {
             profile: {

@@ -18,6 +18,7 @@ import { Spinner } from "../ui/spinner"
 import { uploadFiles } from "@/lib/api/upload"
 import { MediaPost } from "../mediaPost"
 import { file } from "zod"
+import { ImageIcon } from "@phosphor-icons/react"
 
 export const CreateCommentCard = ({commentType, id}: {commentType: "postComment" | "replyComment", id: number}) => {
     const {createComment, isPending: isCommentPending} = useCreateComment()
@@ -75,8 +76,8 @@ export const CreateCommentCard = ({commentType, id}: {commentType: "postComment"
     }
 
     return (
-    <div className="">
-        <form id="form-post" onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
+    <div className="px-4 py-2 border-t border-b border-t-neutral-800">
+        <form id="form-post" onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-2">
             <Controller
                 name="text"
                 control={form.control}
@@ -88,7 +89,7 @@ export const CreateCommentCard = ({commentType, id}: {commentType: "postComment"
                     id="form-text"
                     aria-invalid={fieldState.invalid}
                     placeholder="Post your Reply"
-                    className="placeholder-neutral-500 rounded-2xl outline-none border-none focus:outline-none focus-visible:ring-0 text-2xl"
+                    className="min-h-24 w-full resize-none border-0 bg-transparent p-1 text-base leading-7 text-neutral-100 placeholder:text-neutral-500 focus-visible:ring-0 sm:text-xl"
                     />
                 
                     {fieldState.invalid && (
@@ -106,11 +107,18 @@ export const CreateCommentCard = ({commentType, id}: {commentType: "postComment"
                 control={form.control}
                 render={({field, fieldState}) => (
                     <Field data-invalid={fieldState.invalid} className="w-10 py-2">
+                        <label
+                    htmlFor="form-media"
+                    className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-white/10 bg-white/5 p-1 text-sm font-medium text-neutral-300 transition-colors hover:bg-white/10 hover:text-white"
+                    >
+                    <ImageIcon height={28} width={28} />
+                    </label>
+
                     <Input 
                         id="form-media"
                         type="file"
                         multiple
-                        className="w-8"
+                        className="hidden"
                         onChange={(e) => {
                         const selectedFiles = Array.from(e.target.files || [])
                         setFiles(selectedFiles)
@@ -128,7 +136,7 @@ export const CreateCommentCard = ({commentType, id}: {commentType: "postComment"
         
             <Button 
             type="submit" form="form-post" disabled={disablePost || isCommentPending || isReplyPending}
-            className="rounded-2xl hover:cursor-pointer my-2 w-15"
+            className="rounded-full bg-neutral-100 px-4 py-2 text-sm font-semibold text-neutral-800 shadow-lg shadow-neutral-600/50 transition-all hover:bg-neutral-200 disabled:cursor-not-allowed disabled:bg-neutral-100/50"
             size={"lg"}
             >
             {(isCommentPending || isReplyPending) && (<Spinner data-icon="inline-start" />)}

@@ -10,6 +10,8 @@ import type { updateProfileInput } from "../schema/validator.js";
 
 const getUserPost = async (req: AuthRequest, res: Response) => {
     const username = req.params.username as string
+    console.log("See here!!")
+    console.log(username)
     const cursor = req.query.cursor
     const limit = Number(req.query.limit)
 
@@ -18,6 +20,7 @@ const getUserPost = async (req: AuthRequest, res: Response) => {
     }
 
     const user = await findUserByUsername(username)
+    console.log(user)
     if (!user) {
         throw new AppError("Invalid user Id", StatusCodes.BAD_REQUEST)
     }

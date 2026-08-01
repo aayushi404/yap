@@ -10,20 +10,28 @@ const UnFollowButton = (
     }) => {
     const [showFollowing, setShowFollowing] = useState(true)
     return (
-        <div 
+        <div
+            className="inline-flex"
             onMouseEnter={() => setShowFollowing(false)}
             onMouseLeave={() => setShowFollowing(true)}
         >
             {showFollowing ? (
-                <Button>Following</Button>
-            ): (
-                <Button 
-                    variant={"outline"} 
-                    className="border border-red-800 text-red-800"
-                    onClick={onClick}
-
+                <Button
+                    type="button"
+                    size="sm"
+                    className="rounded-full border border-white/10 bg-neutral-900 px-3.5 py-2 text-sm font-medium text-neutral-100 shadow-sm transition-all hover:bg-neutral-800"
                 >
-                    UnFollow
+                    Following
+                </Button>
+            ): (
+                <Button
+                    type="button"
+                    variant={"destructive"}
+                    size="sm"
+                    className="rounded-full border border-red-500/20 bg-red-500/10 px-3.5 py-2 text-sm font-medium text-red-300 shadow-sm transition-all hover:bg-red-500/20"
+                    onClick={onClick}
+                >
+                    Unfollow
                 </Button>
             )}
         </div>
@@ -37,11 +45,14 @@ const BackButton = (
     }
 ) => {
     return (
-        <Button 
-        className="h-10 w-10 rounded-4xl bg-neutral-950 text-neutral-200 hover:bg-neutral-700"
-        onClick={onClickHandler}
+        <Button
+            type="button"
+            variant="outline"
+            size="icon"
+            className="h-10 w-10 rounded-full border border-white/10 bg-neutral-900/90 text-neutral-100 shadow-sm hover:bg-neutral-800"
+            onClick={onClickHandler}
         >
-            <ArrowLeftIcon size={32} />
+            <ArrowLeftIcon size={20} />
         </Button>
     )
 }
