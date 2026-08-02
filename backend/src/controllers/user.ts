@@ -307,6 +307,13 @@ const updateProfile = async (req: AuthRequest, res: Response) => {
     }
     console.log(reqBody)
     if (userId) {
+        await prisma.user.update({
+            where: {id: Number(userId)},
+            data: {
+                name: reqBody.name
+            }
+        })
+    
         await prisma.profile.update({
             where : {userId: Number(userId)},
             data: {

@@ -97,4 +97,10 @@ type userSearch = {
     username: string,
     profileImage: string | undefined;
 }
-export type {FeedType, PostCommentsType, CommentType, userProfile, userFollow, userSearch}
+
+type updateProfileInput = {
+    name: string,
+    bio: string,
+    profileImage: string | null | string[] | undefined
+}
+export type {FeedType, PostCommentsType, CommentType, userProfile, userFollow, userSearch, updateProfileInput}

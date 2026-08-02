@@ -18,6 +18,7 @@ export type AuthActions = {
     login: (token: string, user: userPayload) => void
     logout: () => void
     setHasHydrated: (state:boolean) => void
+    setUser: (user: userPayload) => void
 }
 
 export type AuthStore = AuthState & AuthActions
@@ -37,7 +38,8 @@ export const createAuthStore = (
             ...initState,
             login: (token, user) => set(() => ({token: token, user: user})),
             logout: () => set(() => ({token: null, user: null})),
-            setHasHydrated: (state) => set(() => ({_hasHydrated:state}))
+            setHasHydrated: (state) => set(() => ({_hasHydrated:state})),
+            setUser: (user) => set(() => ({user: user}))
         }),
         {
             name: "user",
